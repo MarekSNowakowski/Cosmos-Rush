@@ -5,43 +5,47 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float BallPower;
-    public Rigidbody2D rb;
 
-    public Vector2 minimumPower;
-    public Vector2 maximumPower;
-    public LineRenderer line;
-    Camera camera;
-    Vector2 ballForce;
-    Vector3 startPoint;
-    Vector3 endPoint;
+    [Header("Movement")]
+    public float BallPower;
+    private Vector2 minimumPower = new Vector2(-1, -1);
+    private Vector2 maximumPower = new Vector2(1, 1);
+    private Vector2 ballForce;
+    private Vector3 startPoint;
+    private Vector3 endPoint;
+
+    [Header("Components")]
+    private LineRenderer line;
+    public Camera cam;
+    private Rigidbody2D rb;
 
     public void Awake()
     {
         line = GetComponent<LineRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public void Start()
     {
-        camera = Camera.main;
+
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            startPoint = camera.ScreenToWorldPoint(Input.mousePosition);
+            startPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             startPoint.z = 15;
         }
         if(Input.GetMouseButton(0))
         {
-            Vector3 currentPoint = camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 currentPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             currentPoint.z = 15;
             DrawLine(startPoint, currentPoint);
         }
         if(Input.GetMouseButtonUp(0))
         {
-            endPoint = camera.ScreenToWorldPoint(Input.mousePosition);
+            endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             endPoint.z = 15;
 
             ballForce = new Vector2(Mathf.Clamp(startPoint.x - endPoint.x, minimumPower.x, maximumPower.x),
