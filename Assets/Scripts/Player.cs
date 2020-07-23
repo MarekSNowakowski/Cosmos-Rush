@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private Vector3 endPoint;
     public float slowmo = 0.5f;
     public ParticleSystem playerPS;
+    public PolygonCollider2D boundries;
 
     [Header("Components")]
     public Camera cam;
