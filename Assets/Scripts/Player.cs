@@ -18,14 +18,16 @@ public class Player : MonoBehaviour
     public ParticleSystem playerPS;
 
     [Header("Components")]
-    private LineRenderer line;
     public Camera cam;
+    private LineRenderer line;
     private Rigidbody2D rb;
+    private AudioSource audioSource;
 
     public void Awake()
     {
         line = GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Start()
@@ -59,6 +61,7 @@ public class Player : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.AddForce(ballForce * BallPower, ForceMode2D.Impulse);
             endline();
+            audioSource.Play();
             playerPS.Play();
         }
     }
