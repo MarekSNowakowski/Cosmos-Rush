@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 
     [Header("Components")]
     public Camera cam;
+    public GameObject vcam;
     private LineRenderer line;
     private Rigidbody2D rb;
     private AudioSource audioSource;
@@ -79,5 +80,21 @@ public class Player : MonoBehaviour
         Allpoint[0] = rb.position;
         Allpoint[1] = new Vector3(rb.position.x + startPoint.x - endPoint.x, rb.position.y + startPoint.y - endPoint.y);
         line.SetPositions(Allpoint);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        vcam.GetComponent<Animator>().SetBool("ScreenKick", true);
+        StartCoroutine(KickCo());
+        if(collision.gameObject.CompareTag("100"))
+        {
+            collision.gameObject.GetComponent<Circle>().explode();
+        }
+    }
+
+    private IEnumerator KickCo()
+    {
+        yield return null;
+        vcam.GetComponent<Animator>().SetBool("ScreenKick", false);
     }
 }
