@@ -621,7 +621,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 0
   m_CollisionDetection: 1
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!58 &1767469077
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -826,7 +826,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1071bad9d12496743920cebcef2eb133, type: 3}
   - {fileID: 8300000, guid: 48a3051bf6694eb4692dd8fd854bf81a, type: 3}
   - {fileID: 8300000, guid: eca96d75a7158944c88323530e0268ce, type: 3}
-  BallPower: 20
+  BallPower: 10
   minMaxPower: 50
   slowmo: 0.3
   playerPS: {fileID: 1767469083}
