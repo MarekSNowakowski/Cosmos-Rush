@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - 100
+  - 200
+  - 300
+  - Effect
   layers:
   - Default
   - TransparentFX

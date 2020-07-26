@@ -280,7 +280,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
@@ -418,8 +418,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &927111485
-Transform:
+--- !u!224 &927111485
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -431,8 +431,13 @@ Transform:
   m_Children:
   - {fileID: 304187728}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!60 &927111486
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -448,11 +453,11 @@ PolygonCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.16, y: 0.16}
+    newSize: {x: 0.16, y: 0.16}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
@@ -482,7 +487,8 @@ MonoBehaviour:
   virtualCamera: {fileID: 304187727}
   circles:
   - {fileID: 5669124631386763751, guid: 1d2d6bce26bd63143abf240134b8a224, type: 3}
-  number: c8000000
+  - {fileID: 5669124631386763751, guid: 6b28323b55376df49af0d1f631ed8ebc, type: 3}
+  number: 640000001e000000
   radiusCheck: 2
 --- !u!1 &1182205586
 GameObject:
@@ -812,6 +818,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f162f59f4d7dc4e85fed4d0e7ee026, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionEffect: {fileID: 6914856747807358667, guid: 2587f4b31d6a0ff429f2a7229c931b59,
+    type: 3}
+  explosionSounds:
+  - {fileID: 8300000, guid: e112ecea24aed3b41af916e739a3cf52, type: 3}
+  - {fileID: 8300000, guid: 1086485002f9e9d47a13885546bca6c3, type: 3}
+  - {fileID: 8300000, guid: 1071bad9d12496743920cebcef2eb133, type: 3}
+  - {fileID: 8300000, guid: 48a3051bf6694eb4692dd8fd854bf81a, type: 3}
+  - {fileID: 8300000, guid: eca96d75a7158944c88323530e0268ce, type: 3}
   BallPower: 20
   minMaxPower: 50
   slowmo: 0.3

@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 5669124631386763748}
   - component: {fileID: 5669124631386763678}
   m_Layer: 0
-  m_Name: Circle
-  m_TagString: 100
+  m_Name: Spike
+  m_TagString: 300
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5669124631386763751}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -72,8 +72,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4f17c024a9e69294d813610176ebaebe, type: 3}
-  m_Color: {r: 0.11764706, g: 0.3529412, b: 0.09803922, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 75650c663f67b674887a114b79df21aa, type: 3}
+  m_Color: {r: 0.6862745, g: 0.078431375, b: 0.078431375, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f745cf535e352b64cbb43dc3953f4a9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionEffect: {fileID: 6914856747807358667, guid: 5902ef957a0ab4e49915587a704533d1,
+  explosionEffect: {fileID: 6914856747807358667, guid: c67982bb386600b478d5a60f35f9c7f3,
     type: 3}
   explosionSounds:
   - {fileID: 8300000, guid: e112ecea24aed3b41af916e739a3cf52, type: 3}

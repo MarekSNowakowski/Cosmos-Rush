@@ -69,8 +69,9 @@ public class Galaxy : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            collision.GetComponent<Rigidbody2D>().AddForce((transform.position - collision.transform.position) * repellForce, ForceMode2D.Force); 
+            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
+            rb.velocity = Vector2.zero;
+            rb.AddForce((transform.position - collision.transform.position) * repellForce, ForceMode2D.Force); 
         }
     }
 }

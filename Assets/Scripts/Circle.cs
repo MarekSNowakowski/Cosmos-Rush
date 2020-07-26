@@ -4,14 +4,10 @@ using UnityEngine;
 
 public class Circle : MonoBehaviour
 {
-
+    [Header("Explosion")]
     public GameObject explosionEffect;
     public AudioClip[] explosionSounds;
 
-    private void Start()
-    {
-        
-    }
 
     public void explode()
     {

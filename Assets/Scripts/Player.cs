@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Circle
 {
 
     [Header("Movement")]
@@ -90,6 +90,10 @@ public class Player : MonoBehaviour
         {
             collision.gameObject.GetComponent<Circle>().explode();
         }
+        if(collision.gameObject.CompareTag("300"))
+        {
+            gameOver();
+        }
     }
 
     private IEnumerator KickCo()
@@ -97,4 +101,11 @@ public class Player : MonoBehaviour
         yield return null;
         vcam.GetComponent<Animator>().SetBool("ScreenKick", false);
     }
+
+    private void gameOver()
+    {
+        Time.timeScale = 1;
+        explode();
+    }
+
 }
