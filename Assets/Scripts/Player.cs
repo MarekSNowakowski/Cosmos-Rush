@@ -116,7 +116,8 @@ public class Player : Circle
     {
         vcam.GetComponent<Animator>().SetBool("ScreenKick", true);
         StartCoroutine(KickCo());
-        if(collision.gameObject.CompareTag("100"))
+        Rotating(rb.velocity);
+        if (collision.gameObject.CompareTag("100"))
         {
             collision.gameObject.GetComponent<Circle>().explode();
         }
