@@ -24,6 +24,7 @@ public class Player : Circle
     public float slowBouncines;
     public float fastBouncines;
     public float transparentSlow;
+    bool madness;
 
     [Header("Components")]
     public Camera cam;
@@ -35,6 +36,7 @@ public class Player : Circle
     private TrailRenderer tr;
     public GameObject fastEffect;
     public GameObject slowEffect;
+    public GameObject madnessEffect;
     public Color color;
     ParticleSystem.MainModule explosionParticles;
 
@@ -58,13 +60,13 @@ public class Player : Circle
     
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !madness)
         {
             startPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             startPoint.z = 15;
             Time.timeScale = slowmo;
         }
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButton(0) && !madness)
         {
             Vector3 currentPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             currentPoint.z = 15;
@@ -77,7 +79,7 @@ public class Player : Circle
         {
             Squeeze();
         }
-        if(Input.GetMouseButtonUp(0))
+        if(Input.GetMouseButtonUp(0) && !madness)
         {
             Time.timeScale = 1;
             endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
@@ -90,6 +92,11 @@ public class Player : Circle
             endline();
             audioSource.Play();
             playerPS.Play();
+        }
+        if(madness)
+        {
+            Time.timeScale = 1f;
+            endline();
         }
     }
 
@@ -169,6 +176,15 @@ public class Player : Circle
         {
             gameOver();
         }
+        else if (collision.gameObject.CompareTag("400"))
+        {
+            StopAllCoroutines();
+            setUp();
+            madnessEffect.SetActive(true);
+            madness = true;
+            StartCoroutine(changeBounceAndColorCo(1, collision.gameObject.GetComponent<SpriteRenderer>().color));
+            collision.gameObject.GetComponent<Circle>().explode();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -205,6 +221,8 @@ public class Player : Circle
         changeTrailColor(color);
         slowEffect.SetActive(false);
         fastEffect.SetActive(false);
+        madnessEffect.SetActive(false);
+        madness = false;
     }
 
     private void changeTrailColor(Color col)
