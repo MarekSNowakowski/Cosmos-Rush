@@ -73,6 +73,10 @@ public class Player : Circle
             Rotating(lookAt);
             Squeeze(lookAt);
         }
+        else
+        {
+            Squeeze();
+        }
         if(Input.GetMouseButtonUp(0))
         {
             Time.timeScale = 1;
@@ -113,6 +117,12 @@ public class Player : Circle
         float length = Mathf.Sqrt(Mathf.Pow(lookAt.x,2f) + Mathf.Pow(lookAt.y, 2f));
         float scaleY = 1 - length / 100;
         transform.localScale = new Vector3(1, scaleY, 1);
+    }
+
+    private void Squeeze()
+    {
+        float scaleX = 1 - rb.velocity.magnitude / 120;
+        transform.localScale = new Vector3(scaleX, 1, 1);
     }
 
     private void endline()
