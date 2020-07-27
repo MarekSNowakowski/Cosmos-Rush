@@ -19,26 +19,42 @@ public class Player : Circle
     public PolygonCollider2D boundries;
     private float angle;
 
+    [Header("Reactions")]
+    public float SFduration;
+    public float slowBouncines;
+    public float fastBouncines;
+
     [Header("Components")]
     public Camera cam;
     public GameObject vcam;
     private LineRenderer line;
     private Rigidbody2D rb;
     private AudioSource audioSource;
+    private SpriteRenderer sr;
+    private TrailRenderer tr;
+    public GameObject fastEffect;
+    public GameObject slowEffect;
+    public Color color;
+    ParticleSystem.MainModule explosionParticles;
 
     public void Awake()
     {
         line = GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
+        sr = GetComponent<SpriteRenderer>();
+        tr = GetComponent<TrailRenderer>();
+        explosionParticles = explosionEffect.GetComponent<ParticleSystem>().main;
     }
 
     public void Start()
     {
         minimumPower = new Vector2(-minMaxPower, -minMaxPower);
         maximumPower = new Vector2(minMaxPower, minMaxPower);
-}
 
+        setUp();
+    }
+    
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -121,10 +137,62 @@ public class Player : Circle
         {
             collision.gameObject.GetComponent<Circle>().explode();
         }
-        if(collision.gameObject.CompareTag("300"))
+        else if( collision.gameObject.CompareTag("200a"))
+        {
+            StopAllCoroutines();
+            setUp();
+            slowEffect.SetActive(true);
+            StartCoroutine(changeBounceAndColorCo(slowBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
+            collision.gameObject.GetComponent<Circle>().explode();
+            rb.velocity *= slowBouncines;
+        }
+        else if (collision.gameObject.CompareTag("200b"))
+        {
+            StopAllCoroutines();
+            setUp();
+            fastEffect.SetActive(true);
+            StartCoroutine(changeBounceAndColorCo(fastBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
+            collision.gameObject.GetComponent<Circle>().explode();
+            rb.velocity *= fastBouncines;
+        }
+        else if (collision.gameObject.CompareTag("300"))
         {
             gameOver();
         }
+    }
+
+    private IEnumerator changeBounceAndColorCo(float bounc, Color col)
+    {
+        ParticleSystem.MinMaxGradient grad = new ParticleSystem.MinMaxGradient(color, col);
+
+        rb.sharedMaterial.bounciness = bounc;   //bouncines changed
+        sr.color = col;     //PlayerColor changed
+        explosionParticles.startColor = grad;     //ParticleColor changed
+        changeTrailColor(col);      //TrailColor changed
+
+        yield return new WaitForSeconds(SFduration);
+
+        setUp();
+    }
+
+    private void setUp()
+    {
+        sr.color = color;
+        explosionParticles.startColor = color;
+        rb.sharedMaterial.bounciness = 1;
+        changeTrailColor(color);
+        slowEffect.SetActive(false);
+        fastEffect.SetActive(false);
+    }
+
+    private void changeTrailColor(Color col)
+    {
+        float trailStartOpacity = 0.85f;
+
+        col.a = trailStartOpacity;
+        tr.startColor = col;
+        col.a = 0f;
+        tr.endColor = col;
     }
 
     private IEnumerator KickCo()
