@@ -23,6 +23,7 @@ public class Player : Circle
     public float SFduration;
     public float slowBouncines;
     public float fastBouncines;
+    public float transparentSlow;
 
     [Header("Components")]
     public Camera cam;
@@ -130,7 +131,6 @@ public class Player : Circle
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        vcam.GetComponent<Animator>().SetBool("ScreenKick", true);
         StartCoroutine(KickCo());
         Rotating(rb.velocity);
         if (collision.gameObject.CompareTag("100"))
@@ -158,6 +158,18 @@ public class Player : Circle
         else if (collision.gameObject.CompareTag("300"))
         {
             gameOver();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        StartCoroutine(KickCo());
+        if (collision.gameObject.CompareTag("100"))
+        {
+            collision.gameObject.GetComponent<Circle>().explode();
+            if (slowEffect.activeInHierarchy) rb.velocity *= slowBouncines;
+            else if (fastEffect.activeInHierarchy) rb.velocity *= fastBouncines;
+            else rb.velocity *= transparentSlow;
         }
     }
 
@@ -197,6 +209,7 @@ public class Player : Circle
 
     private IEnumerator KickCo()
     {
+        vcam.GetComponent<Animator>().SetBool("ScreenKick", true);
         yield return null;
         vcam.GetComponent<Animator>().SetBool("ScreenKick", false);
     }

@@ -7,6 +7,9 @@ public class Galaxy : MonoBehaviour
     public float repellForce;
     public GameObject virtualCamera;
     private PolygonCollider2D colider;
+    private LineRenderer lr;
+    private EdgeCollider2D edgeCollider;
+
     [Header("Spawning")]
     public Object[] circles;
     public int[] number;
@@ -15,6 +18,24 @@ public class Galaxy : MonoBehaviour
     private void Start()
     {
         colider = GetComponent<PolygonCollider2D>();
+        lr = GetComponent<LineRenderer>();
+        edgeCollider = GetComponent<EdgeCollider2D>();
+
+        Vector2[] path = colider.GetPath(0);
+        int i;
+
+        lr.positionCount = path.Length + 1;
+        Vector2[] tempArray = new Vector2[path.Length+1];
+
+        for (i = 0 ; i < path.Length; i++)
+        {
+            tempArray.SetValue(path[i], i);
+            lr.SetPosition(i, new Vector3(path[i].x, path[i].y, 0));
+        }
+        tempArray.SetValue(path[0], i);
+        lr.SetPosition(i, new Vector3(path[0].x, path[0].y, 0));
+        edgeCollider.points = tempArray;
+
         Spawn();
     }
 
