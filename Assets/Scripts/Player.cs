@@ -18,6 +18,7 @@ public class Player : Circle
     public ParticleSystem playerPS;
     public PolygonCollider2D boundries;
     private float angle;
+    private float minVelocity = 5.1f; //minimal velocity needed to destroy a ball
 
     [Header("Reactions")]
     public float SFduration;
@@ -25,6 +26,25 @@ public class Player : Circle
     public float fastBouncines;
     public float transparentSlow;
     bool madness;
+
+    [Header("Statistics")]
+    public float comboTimeMultiplayer; //comboMaxTime shortens with every combo
+    public int currentCombo;
+    public float comboMaxTime;
+    public float comboCurrentTime;
+
+    public float score;
+    public float highScore;
+    public float destroyedBalls;
+    public float destroyedBallsOverall;
+    public float maxSpeed;
+    public float maxSpeedOverall;
+    public float distance;
+    public float distanceOverall;
+    public float money;
+
+    private Vector2 currentPoint;
+    private Vector2 previousPoint;
 
     [Header("Components")]
     public Camera cam;
@@ -65,6 +85,7 @@ public class Player : Circle
             startPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             startPoint.z = 15;
             Time.timeScale = slowmo;
+            speedAndDistance();
         }
         if(Input.GetMouseButton(0) && !madness)
         {
@@ -92,12 +113,14 @@ public class Player : Circle
             endline();
             audioSource.Play();
             playerPS.Play();
+            speedAndDistance();
         }
         if(madness)
         {
             Time.timeScale = 1f;
             endline();
         }
+        Combo();
     }
 
     private void Rotating(Vector2 lookAt)
@@ -148,28 +171,39 @@ public class Player : Circle
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        StartCoroutine(KickCo());
+        speedAndDistance();
         Rotating(rb.velocity);
+
+        if (rb.velocity.magnitude < minVelocity) return; 
+
+        StartCoroutine(KickCo());
+        
+
         if (collision.gameObject.CompareTag("100"))
         {
+            BallDestroyed(100);
             collision.gameObject.GetComponent<Circle>().explode();
         }
         else if( collision.gameObject.CompareTag("200a"))
         {
+            BallDestroyed(200);
             StopAllCoroutines();
             setUp();
             slowEffect.SetActive(true);
             StartCoroutine(changeBounceAndColorCo(slowBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
             collision.gameObject.GetComponent<Circle>().explode();
+            minVelocity *= slowBouncines;
             rb.velocity *= slowBouncines;
         }
         else if (collision.gameObject.CompareTag("200b"))
         {
+            BallDestroyed(200);
             StopAllCoroutines();
             setUp();
             fastEffect.SetActive(true);
             StartCoroutine(changeBounceAndColorCo(fastBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
             collision.gameObject.GetComponent<Circle>().explode();
+            minVelocity *= fastBouncines;
             rb.velocity *= fastBouncines;
         }
         else if (collision.gameObject.CompareTag("300"))
@@ -178,6 +212,7 @@ public class Player : Circle
         }
         else if (collision.gameObject.CompareTag("400"))
         {
+            BallDestroyed(400);
             StopAllCoroutines();
             setUp();
             madnessEffect.SetActive(true);
@@ -192,6 +227,7 @@ public class Player : Circle
         StartCoroutine(KickCo());
         if (collision.gameObject.CompareTag("100"))
         {
+            BallDestroyed(100);
             collision.gameObject.GetComponent<Circle>().explode();
             if (slowEffect.activeInHierarchy) rb.velocity *= slowBouncines;
             else if (fastEffect.activeInHierarchy) rb.velocity *= fastBouncines;
@@ -223,6 +259,7 @@ public class Player : Circle
         fastEffect.SetActive(false);
         madnessEffect.SetActive(false);
         madness = false;
+        minVelocity = 6;
     }
 
     private void changeTrailColor(Color col)
@@ -244,8 +281,79 @@ public class Player : Circle
 
     private void gameOver()
     {
+        saveStatistics();
         Time.timeScale = 1;
         explode();
+    }
+
+    private void saveStatistics()
+    {
+        if (score > highScore) highScore = score;
+        if (maxSpeed > maxSpeedOverall) maxSpeedOverall = maxSpeed;
+
+        destroyedBallsOverall += destroyedBalls;
+        distanceOverall += distance;
+
+        money += score / 100;
+
+        PlayerPrefs.SetFloat("HighScore", highScore);
+        PlayerPrefs.SetFloat("maxSpeed", maxSpeedOverall);
+        PlayerPrefs.SetFloat("destroyedBalls", destroyedBallsOverall);
+        PlayerPrefs.SetFloat("distance", distanceOverall);
+        PlayerPrefs.SetFloat("money", money);
+        PlayerPrefs.Save();
+    }
+
+    /*private void loadStatistics()
+    {
+        highScore = PlayerPrefs.GetFloat("HighScore");
+        maxSpeedOverall = PlayerPrefs.GetFloat("maxSpeed", maxSpeedOverall);
+        destroyedBallsOverall = PlayerPrefs.GetFloat("destroyedBalls", destroyedBallsOverall);
+        distanceOverall = PlayerPrefs.GetFloat("distance", distanceOverall);
+        money = PlayerPrefs.GetFloat("money", money);
+    }*/
+
+    public void speedAndDistance()
+    {
+        currentPoint = transform.position;
+
+        distance += (long)Vector2.Distance(previousPoint, currentPoint);
+
+        previousPoint = currentPoint;
+
+        if (rb.velocity.magnitude > maxSpeed) maxSpeed = rb.velocity.magnitude;
+    }
+
+    private void Combo()
+    {
+        comboCurrentTime -= Time.deltaTime;
+        if(comboCurrentTime < 0)
+        {
+            currentCombo = 0;
+            comboCurrentTime = comboMaxTime;
+        }
+    }
+
+    public void BallDestroyed(short score)
+    {
+        //Increase Combo
+        currentCombo++;
+        comboCurrentTime = comboMaxTime * Mathf.Pow(comboTimeMultiplayer, currentCombo);
+
+        //AddPoints
+        int speedMultiplyer = (int)Math.Round(Convert.ToDouble(rb.velocity.magnitude) / 10, MidpointRounding.AwayFromZero);
+        this.score += score * currentCombo * speedMultiplyer;
+
+        destroyedBalls++;
+    }
+
+    public void setUpStatistics()
+    {
+        score = 0;
+        destroyedBalls = 0;
+        maxSpeed = 0;
+        distance = 0;
+        money = 0;
     }
 
 }
