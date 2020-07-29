@@ -7,6 +7,7 @@ public class Circle : MonoBehaviour
     [Header("Explosion")]
     public GameObject explosionEffect;
     public AudioClip[] explosionSounds;
+    private float effectTime = 3;
 
 
     public void explode()
@@ -14,7 +15,9 @@ public class Circle : MonoBehaviour
         var effect = Instantiate(explosionEffect, transform.position, Quaternion.identity);
         effect.GetComponent<AudioSource>().clip = explosionSounds[Random.Range(0, explosionSounds.Length)];
         effect.GetComponent<AudioSource>().Play();
-        Destroy(effect,3);
-        Destroy(gameObject);
+        Destroy(effect, effectTime);
+
+        if (this.gameObject.CompareTag("Player")) this.gameObject.SetActive(false);
+        else Destroy(gameObject);
     }
 }

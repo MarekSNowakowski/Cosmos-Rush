@@ -16,7 +16,6 @@ public class Player : Circle
     private Vector3 endPoint;
     public float slowmo = 0.5f;
     public ParticleSystem playerPS;
-    public PolygonCollider2D boundries;
     private float angle;
     private float minVelocity = 5.1f; //minimal velocity needed to destroy a ball
 
@@ -33,6 +32,7 @@ public class Player : Circle
     public float comboMaxTime;
     public float comboCurrentTime;
 
+    [HideInInspector]
     public float score;
     public float highScore;
     public float destroyedBalls;
@@ -42,6 +42,8 @@ public class Player : Circle
     public float distance;
     public float distanceOverall;
     public float money;
+    public int maxCombo;
+    public int maxComboOverall;
 
     private Vector2 currentPoint;
     private Vector2 previousPoint;
@@ -59,6 +61,7 @@ public class Player : Circle
     public GameObject madnessEffect;
     public Color color;
     ParticleSystem.MainModule explosionParticles;
+    public UIaction UIaction;
 
     public void Awake()
     {
@@ -279,11 +282,21 @@ public class Player : Circle
         vcam.GetComponent<Animator>().SetBool("ScreenKick", false);
     }
 
-    private void gameOver()
+    public void gameOver()
     {
+        tr.enabled = false;
         saveStatistics();
         Time.timeScale = 1;
         explode();
+        UIaction.gameOver();
+    }
+
+    public void newGame()
+    {
+        tr.enabled = true;
+        setUp();
+        currentCombo = 0;
+        setUpStatistics();
     }
 
     private void saveStatistics()
@@ -353,7 +366,7 @@ public class Player : Circle
         destroyedBalls = 0;
         maxSpeed = 0;
         distance = 0;
-        money = 0;
+        maxCombo = 0;
     }
 
 }

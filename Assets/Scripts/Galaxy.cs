@@ -11,11 +11,19 @@ public class Galaxy : MonoBehaviour
     private EdgeCollider2D edgeCollider;
 
     [Header("Spawning")]
+    public GameObject player;
     public Object[] circles;
     public int[] number;
     public float radiusCheck;
 
     private void Start()
+    {
+        buildBoundaries();
+        setPlayer();
+        Spawn();
+    }
+
+    private void buildBoundaries()
     {
         colider = GetComponent<PolygonCollider2D>();
         lr = GetComponent<LineRenderer>();
@@ -25,9 +33,9 @@ public class Galaxy : MonoBehaviour
         int i;
 
         lr.positionCount = path.Length + 1;
-        Vector2[] tempArray = new Vector2[path.Length+1];
+        Vector2[] tempArray = new Vector2[path.Length + 1];
 
-        for (i = 0 ; i < path.Length; i++)
+        for (i = 0; i < path.Length; i++)
         {
             tempArray.SetValue(path[i], i);
             lr.SetPosition(i, new Vector3(path[i].x, path[i].y, 0));
@@ -35,8 +43,6 @@ public class Galaxy : MonoBehaviour
         tempArray.SetValue(path[0], i);
         lr.SetPosition(i, new Vector3(path[0].x, path[0].y, 0));
         edgeCollider.points = tempArray;
-
-        Spawn();
     }
 
     private void Spawn()
@@ -50,6 +56,29 @@ public class Galaxy : MonoBehaviour
             }
             i++;
         }
+    }
+
+    private void setPlayer()
+    {
+        player.SetActive(true);
+        player.transform.position = this.transform.position;
+    }
+
+    private void Despawn()
+    {
+        string[] circleTags = { "100", "200a", "200b", "300", "400" };
+        foreach (string circleTag in circleTags)
+        {
+            var clones = GameObject.FindGameObjectsWithTag(circleTag);
+            foreach (var clone in clones) Destroy(clone);
+        }
+    }
+
+    public void newGame()
+    {
+        Despawn();
+        setPlayer();
+        Spawn();
     }
 
     private Vector3 PointInArea()

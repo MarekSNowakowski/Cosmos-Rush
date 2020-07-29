@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Stats : MonoBehaviour
+public class UIaction : MonoBehaviour
 {
     public GameObject playerObject;
     private Player player;
@@ -14,12 +14,26 @@ public class Stats : MonoBehaviour
     public Text score;
     public Text speedM;
     public Text speed;
+    public GameObject gameOverPanel;
 
+    private Animator animator;
 
     private void Start()
     {
         player = playerObject.GetComponent<Player>();
         rb = playerObject.GetComponent<Rigidbody2D>();
+        animator = this.GetComponent<Animator>();
+    }
+
+    public void gameOver()
+    {
+        animator.SetBool("gameRunning", false);
+    }
+
+    public void newGame()
+    {
+        animator.SetBool("gameRunning", true);
+        gameOverPanel.SetActive(false);
     }
 
     void Update()
