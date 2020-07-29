@@ -20,7 +20,8 @@ public class Player : Circle
     private float minVelocity = 5.1f; //minimal velocity needed to destroy a ball
 
     [Header("Reactions")]
-    public float SFduration;
+    public float effectDuration;
+    public float effectTimer;
     public float slowBouncines;
     public float fastBouncines;
     public float transparentSlow;
@@ -32,19 +33,19 @@ public class Player : Circle
     public float comboMaxTime;
     public float comboCurrentTime;
 
-    [HideInInspector]
-    public float score;
-    public float highScore;
-    public float destroyedBalls;
-    public float destroyedBallsOverall;
-    public float maxSpeed;
-    public float maxSpeedOverall;
-    public float distance;
-    public float distanceOverall;
-    public float money;
-    public int maxCombo;
-    public int maxComboOverall;
 
+    [HideInInspector] public float score;
+    [HideInInspector] public float highScore;
+    [HideInInspector] public float destroyedBalls;
+    [HideInInspector] public float destroyedBallsOverall;
+    [HideInInspector] public float maxSpeed;
+    [HideInInspector] public float maxSpeedOverall;
+    [HideInInspector] public float distance;
+    [HideInInspector] public float distanceOverall;
+    [HideInInspector] public float money;
+    [HideInInspector] public int maxCombo;
+    [HideInInspector] public int maxComboOverall;
+  
     private Vector2 currentPoint;
     private Vector2 previousPoint;
 
@@ -122,7 +123,8 @@ public class Player : Circle
         {
             Time.timeScale = 1f;
             endline();
-        }
+            effectTimer -= Time.deltaTime;
+        }else if(rb.sharedMaterial.bounciness != 1) effectTimer -= Time.deltaTime;
         Combo();
     }
 
@@ -193,6 +195,7 @@ public class Player : Circle
             StopAllCoroutines();
             setUp();
             slowEffect.SetActive(true);
+            effectTimer = effectDuration;
             StartCoroutine(changeBounceAndColorCo(slowBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
             collision.gameObject.GetComponent<Circle>().explode();
             minVelocity *= slowBouncines;
@@ -204,6 +207,7 @@ public class Player : Circle
             StopAllCoroutines();
             setUp();
             fastEffect.SetActive(true);
+            effectTimer = effectDuration;
             StartCoroutine(changeBounceAndColorCo(fastBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
             collision.gameObject.GetComponent<Circle>().explode();
             minVelocity *= fastBouncines;
@@ -220,6 +224,7 @@ public class Player : Circle
             setUp();
             madnessEffect.SetActive(true);
             madness = true;
+            effectTimer = effectDuration;
             StartCoroutine(changeBounceAndColorCo(1, collision.gameObject.GetComponent<SpriteRenderer>().color));
             collision.gameObject.GetComponent<Circle>().explode();
         }
@@ -247,8 +252,9 @@ public class Player : Circle
         explosionParticles.startColor = grad;     //ParticleColor changed
         changeTrailColor(col);      //TrailColor changed
 
-        yield return new WaitForSeconds(SFduration);
+        yield return new WaitForSeconds(effectDuration);
 
+        effectTimer = 0;
         setUp();
     }
 
@@ -263,6 +269,7 @@ public class Player : Circle
         madnessEffect.SetActive(false);
         madness = false;
         minVelocity = 6;
+        effectTimer = 0;
     }
 
     private void changeTrailColor(Color col)

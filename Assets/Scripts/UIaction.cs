@@ -20,11 +20,15 @@ public class UIaction : MonoBehaviour
     public GameObject speedM;
     public GameObject speed;
 
+    public GameObject effectText;
+    public GameObject effectTime;
+
     private TextMeshProUGUI comboTimerT;
     private TextMeshProUGUI comboT;
     private TextMeshProUGUI scoreT;
     private TextMeshProUGUI speedMT;
     private TextMeshProUGUI speedT;
+    private TextMeshProUGUI effectTimeT;
 
 
     private void Start()
@@ -38,6 +42,7 @@ public class UIaction : MonoBehaviour
         scoreT = score.GetComponent<TextMeshProUGUI>();
         speedMT = speedM.GetComponent<TextMeshProUGUI>();
         speedT = speed.GetComponent<TextMeshProUGUI>();
+        effectTimeT = effectTime.GetComponent<TextMeshProUGUI>();
     }
 
     public void gameOver()
@@ -64,10 +69,23 @@ public class UIaction : MonoBehaviour
         int speedMultiplyer = (int)Math.Round(Convert.ToDouble(rb.velocity.magnitude) / 10, MidpointRounding.AwayFromZero);
 
         if (player.currentCombo == 0) comboTimerT.text = "-";
-        else comboTimerT.text = player.comboCurrentTime.ToString("F2");
+        else comboTimerT.text = player.comboCurrentTime.ToString("F1");
         comboT.text = "x" + player.currentCombo;
         scoreT.text = player.score.ToString();
         speedMT.text = "x" + speedMultiplyer;
         speedT.text = rb.velocity.magnitude.ToString("F1");
+
+        if(player.effectTimer == 0)
+        {
+            effectText.SetActive(false);
+            effectTime.SetActive(false);
+        }else if(!effectText.activeInHierarchy || !effectTime.activeInHierarchy)
+        {
+            effectText.SetActive(true);
+            effectTime.SetActive(true);
+        }else
+        {
+            effectTimeT.text = player.effectTimer.ToString("F1");
+        }
     }
 }
