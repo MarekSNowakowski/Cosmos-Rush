@@ -19,8 +19,7 @@ public class Galaxy : MonoBehaviour
     private void Start()
     {
         buildBoundaries();
-        setPlayer();
-        Spawn();
+        //setPlayer();
     }
 
     private void buildBoundaries()
@@ -72,6 +71,14 @@ public class Galaxy : MonoBehaviour
             var clones = GameObject.FindGameObjectsWithTag(circleTag);
             foreach (var clone in clones) Destroy(clone);
         }
+    }
+
+    public void GoToMainMenu()
+    {
+        player.SetActive(true);
+        player.transform.position = this.transform.position;
+        Despawn();
+        player.SetActive(false);
     }
 
     public void newGame()
