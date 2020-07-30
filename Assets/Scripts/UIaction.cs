@@ -13,6 +13,13 @@ public class UIaction : MonoBehaviour
     public GameObject gameOverPanel;
     private Animator animator;
 
+    [Header("audio")]
+    public Camera cam;
+    private AudioReverbFilter audioFilter;
+    public float dryLevel;
+    public AudioReverbPreset menuEffect;
+
+
     [Header("In game UI")]
     public GameObject comboTimer;
     public GameObject combo;
@@ -43,18 +50,30 @@ public class UIaction : MonoBehaviour
         speedMT = speedM.GetComponent<TextMeshProUGUI>();
         speedT = speed.GetComponent<TextMeshProUGUI>();
         effectTimeT = effectTime.GetComponent<TextMeshProUGUI>();
+
+        audioFilter = cam.GetComponent<AudioReverbFilter>();
+
+        audioFilter.reverbPreset = menuEffect;
+        audioFilter.dryLevel = -dryLevel;
     }
 
     public void gameOver()
     {
         animator.SetBool("gameRunning", false);
+
+        audioFilter.reverbPreset = menuEffect;
+        audioFilter.dryLevel = -dryLevel;
     }
 
     public void newGame()
     {
+        cam.GetComponent<AudioReverbFilter>().dryLevel = 0;
         animator.SetBool("mainMenu", false);
         animator.SetBool("gameRunning", true);
         gameOverPanel.SetActive(false);
+
+        audioFilter.reverbPreset = AudioReverbPreset.Off;
+        audioFilter.dryLevel = 0;
     }
 
     public void GoToMainMenu()
