@@ -37,6 +37,15 @@ public class UIaction : MonoBehaviour
     private TextMeshProUGUI speedT;
     private TextMeshProUGUI effectTimeT;
 
+    [Header("Stats")]
+    public TextMeshProUGUI scoreF;
+    public TextMeshProUGUI maxSpeed;
+    public TextMeshProUGUI distance;
+    public TextMeshProUGUI ballsDestroyed;
+    public TextMeshProUGUI money;
+    private float startMoney;
+    private float moneyDifference;
+
 
     private void Start()
     {
@@ -63,6 +72,38 @@ public class UIaction : MonoBehaviour
 
         audioFilter.reverbPreset = menuEffect;
         audioFilter.dryLevel = -dryLevel;
+
+        scoreF.text = player.score.ToString();
+        maxSpeed.text = player.maxSpeed.ToString("F1");
+        distance.text = player.distance.ToString();
+        ballsDestroyed.text = player.destroyedBalls.ToString();
+        moneyDifference = player.money - startMoney;
+        money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
+        StartCoroutine(addMoney());
+    }
+
+    public IEnumerator addMoney()
+    {
+        var diffConst = player.money - startMoney;
+
+        yield return new WaitForSeconds(1);
+        for (int j = 12; j  >= 0; j--)
+        {
+            if (Mathf.Pow(10, j) > moneyDifference) yield return null;
+            else
+            {
+                do
+                {
+                    startMoney += Mathf.Pow(10, j);
+                    moneyDifference -= Mathf.Pow(10, j);
+                    money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
+                    yield return new WaitForSeconds(0.08f);
+                } while (Mathf.Pow(10, j) <= moneyDifference);
+            }
+
+        }
+
+        money.text = startMoney.ToString();
     }
 
     public void newGame()
@@ -74,11 +115,14 @@ public class UIaction : MonoBehaviour
 
         audioFilter.reverbPreset = AudioReverbPreset.Off;
         audioFilter.dryLevel = 0;
+        startMoney = player.money;
+        StopAllCoroutines();
     }
 
     public void GoToMainMenu()
     {
         animator.SetBool("mainMenu", true);
+        StopAllCoroutines();
     }
 
     void Update()

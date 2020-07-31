@@ -36,13 +36,13 @@ public class Player : Circle
 
     [HideInInspector] public float score;
     [HideInInspector] public float highScore;
-    [HideInInspector] public float destroyedBalls;
+     public float destroyedBalls;
     [HideInInspector] public float destroyedBallsOverall;
     [HideInInspector] public float maxSpeed;
     [HideInInspector] public float maxSpeedOverall;
     [HideInInspector] public float distance;
     [HideInInspector] public float distanceOverall;
-    [HideInInspector] public float money;
+     public float money;
     [HideInInspector] public int maxCombo;
     [HideInInspector] public int maxComboOverall;
   
@@ -76,6 +76,8 @@ public class Player : Circle
 
     public void Start()
     {
+        loadStatistics();
+
         minimumPower = new Vector2(-minMaxPower, -minMaxPower);
         maximumPower = new Vector2(minMaxPower, minMaxPower);
 
@@ -324,14 +326,14 @@ public class Player : Circle
         PlayerPrefs.Save();
     }
 
-    /*private void loadStatistics()
+    private void loadStatistics()
     {
         highScore = PlayerPrefs.GetFloat("HighScore");
         maxSpeedOverall = PlayerPrefs.GetFloat("maxSpeed", maxSpeedOverall);
         destroyedBallsOverall = PlayerPrefs.GetFloat("destroyedBalls", destroyedBallsOverall);
         distanceOverall = PlayerPrefs.GetFloat("distance", distanceOverall);
         money = PlayerPrefs.GetFloat("money", money);
-    }*/
+    }
 
     public void speedAndDistance()
     {
