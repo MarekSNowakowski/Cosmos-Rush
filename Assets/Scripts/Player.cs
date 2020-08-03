@@ -35,7 +35,8 @@ public class Player : Circle
 
 
     [HideInInspector] public float score;
-    [HideInInspector] public float highScore;
+    public float highScore;
+    public float oldHighScore;
      public float destroyedBalls;
     [HideInInspector] public float destroyedBallsOverall;
     [HideInInspector] public float maxSpeed;
@@ -278,6 +279,7 @@ public class Player : Circle
         madness = false;
         minVelocity = 6;
         effectTimer = 0;
+        oldHighScore = highScore;
     }
 
     private void changeTrailColor(Color col)
@@ -316,7 +318,10 @@ public class Player : Circle
 
     private void saveStatistics()
     {
-        if (score > highScore) highScore = score;
+        if (score > highScore)
+        {
+            highScore = score;
+        }
         if (maxSpeed > maxSpeedOverall) maxSpeedOverall = maxSpeed;
 
         destroyedBallsOverall += destroyedBalls;

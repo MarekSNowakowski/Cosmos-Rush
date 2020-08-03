@@ -39,6 +39,8 @@ public class UIaction : MonoBehaviour
 
     [Header("Stats")]
     public TextMeshProUGUI scoreF;
+    public TextMeshProUGUI HighScoreT;
+    public TextMeshProUGUI HighScore;
     public TextMeshProUGUI maxSpeed;
     public TextMeshProUGUI distance;
     public TextMeshProUGUI ballsDestroyed;
@@ -74,18 +76,35 @@ public class UIaction : MonoBehaviour
         audioFilter.dryLevel = -dryLevel;
 
         scoreF.text = player.score.ToString();
+        HighScore.text = player.highScore.ToString();
+        if (player.oldHighScore != player.highScore)
+        {
+            animator.SetBool("highScore", true);
+        }
         maxSpeed.text = player.maxSpeed.ToString("F1");
         distance.text = player.distance.ToString();
         ballsDestroyed.text = player.destroyedBalls.ToString();
         moneyDifference = player.money - startMoney;
-        money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
         StartCoroutine(addMoney());
+    }
+
+    public void highScoreStart()
+    {
+        HighScore.text = player.oldHighScore.ToString();
+        animator.SetBool("highScore", false);
+        HighScoreT.text = "NEW" + Environment.NewLine + "HIGH SCORE!";
+    }
+
+    public void highScoreEnd()
+    {
+        HighScore.text = player.score.ToString();
+        HighScoreT.text = "HIGH SCORE";
     }
 
     public IEnumerator addMoney()
     {
         var diffConst = player.money - startMoney;
-
+        money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
         yield return new WaitForSeconds(1);
         for (int j = 12; j  >= 0; j--)
         {

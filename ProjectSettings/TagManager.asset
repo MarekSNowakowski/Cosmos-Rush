@@ -10,6 +10,7 @@ TagManager:
   - 200a
   - 200b
   - 400
+  - galaxy
   layers:
   - Default
   - TransparentFX
