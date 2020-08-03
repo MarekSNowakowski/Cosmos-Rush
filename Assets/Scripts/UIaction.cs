@@ -43,7 +43,7 @@ public class UIaction : MonoBehaviour
     public TextMeshProUGUI distance;
     public TextMeshProUGUI ballsDestroyed;
     public TextMeshProUGUI money;
-    private float startMoney;
+    public float startMoney;
     private float moneyDifference;
 
 
@@ -97,8 +97,9 @@ public class UIaction : MonoBehaviour
                     startMoney += Mathf.Pow(10, j);
                     moneyDifference -= Mathf.Pow(10, j);
                     money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
-                    yield return new WaitForSeconds(0.08f);
-                } while (Mathf.Pow(10, j) <= moneyDifference);
+                    if (moneyDifference == 0) break;
+                    yield return new WaitForSeconds(0.1f);
+                } while (Mathf.Pow(10, j) < moneyDifference - (Mathf.Pow(10,j)) );
             }
 
         }
@@ -115,7 +116,7 @@ public class UIaction : MonoBehaviour
 
         audioFilter.reverbPreset = AudioReverbPreset.Off;
         audioFilter.dryLevel = 0;
-        startMoney = player.money;
+        startMoney = PlayerPrefs.GetFloat("money");
         StopAllCoroutines();
     }
 

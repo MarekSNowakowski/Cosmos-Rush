@@ -81,6 +81,8 @@ public class Player : Circle
         minimumPower = new Vector2(-minMaxPower, -minMaxPower);
         maximumPower = new Vector2(minMaxPower, minMaxPower);
 
+        Time.fixedDeltaTime = 0.02F * Time.timeScale;
+
         setUp();
     }
     
@@ -91,9 +93,10 @@ public class Player : Circle
             startPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             startPoint.z = 15;
             Time.timeScale = slowmo;
+            Time.fixedDeltaTime = 0.02F * Time.timeScale;
             speedAndDistance();
         }
-        if(Input.GetMouseButton(0) && !madness)
+        if (Input.GetMouseButton(0) && !madness)
         {
             Vector3 currentPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             currentPoint.z = 15;
@@ -109,6 +112,7 @@ public class Player : Circle
         if(Input.GetMouseButtonUp(0) && !madness)
         {
             Time.timeScale = 1;
+            Time.fixedDeltaTime = 0.02F * Time.timeScale;
             endPoint = cam.ScreenToWorldPoint(Input.mousePosition);
             endPoint.z = 15;
             transform.localScale = Vector3.one;
@@ -151,9 +155,11 @@ public class Player : Circle
 
     private void Squeeze(Vector3 lookAt)
     {
+        float scaleX = transform.localScale.x;
+        if (scaleX < 1) scaleX += 0.015f;
         float length = Mathf.Sqrt(Mathf.Pow(lookAt.x,2f) + Mathf.Pow(lookAt.y, 2f));
         float scaleY = 1 - length / 100;
-        transform.localScale = new Vector3(1, scaleY, 1);
+        transform.localScale = new Vector3(scaleX, scaleY, 1);
     }
 
     private void Squeeze()
@@ -234,7 +240,6 @@ public class Player : Circle
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        StartCoroutine(KickCo());
         if (collision.gameObject.CompareTag("100"))
         {
             BallDestroyed(100);
@@ -242,6 +247,7 @@ public class Player : Circle
             if (slowEffect.activeInHierarchy) rb.velocity *= slowBouncines;
             else if (fastEffect.activeInHierarchy) rb.velocity *= fastBouncines;
             else rb.velocity *= transparentSlow;
+            StartCoroutine(KickCo());
         }
     }
 
