@@ -237,6 +237,10 @@ public class Player : Circle
             StartCoroutine(changeBounceAndColorCo(1, collision.gameObject.GetComponent<SpriteRenderer>().color));
             collision.gameObject.GetComponent<Circle>().explode();
         }
+        else if (collision.gameObject.CompareTag("blackHole"))
+        {
+            gameOver();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
