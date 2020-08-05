@@ -65,7 +65,7 @@ public class Galaxy : MonoBehaviour
 
     private void Despawn()
     {
-        string[] circleTags = { "100", "200a", "200b", "300", "400", "blackHole" };
+        string[] circleTags = { "100", "200a", "200b", "300", "400", "blackHole", "Effect" };
         foreach (string circleTag in circleTags)
         {
             var clones = GameObject.FindGameObjectsWithTag(circleTag);
@@ -122,7 +122,7 @@ public class Galaxy : MonoBehaviour
         virtualCamera.SetActive(false);
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    /*private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
@@ -130,5 +130,5 @@ public class Galaxy : MonoBehaviour
             rb.velocity = Vector2.zero;
             rb.AddForce((transform.position - collision.transform.position) * repellForce, ForceMode2D.Force); 
         }
-    }
+    }*/
 }

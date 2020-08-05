@@ -21,7 +21,7 @@ public class BlackHole : MonoBehaviour
 
     private void Start()
     {
-        scale = Random.Range(0.5f, 2);
+        scale = Random.Range(0.5f, 1.5f);
         transform.localScale = new Vector3(scale, scale, 1);
         mass = 1000 * scale + Random.Range(0, 999);
     }

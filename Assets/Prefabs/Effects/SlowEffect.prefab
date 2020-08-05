@@ -2355,7 +2355,7 @@ ParticleSystem:
     randomizePerFrame: 1
   ExternalForcesModule:
     serializedVersion: 2
-    enabled: 0
+    enabled: 1
     multiplierCurve:
       serializedVersion: 2
       minMaxState: 0
