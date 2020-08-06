@@ -35,17 +35,18 @@ public class Player : Circle
 
 
     [HideInInspector] public float score;
-    public float highScore;
-    public float oldHighScore;
-     public float destroyedBalls;
+    [HideInInspector] public float highScore;
+    [HideInInspector] public float oldHighScore;
+    [HideInInspector] public float destroyedBalls;
     [HideInInspector] public float destroyedBallsOverall;
     [HideInInspector] public float maxSpeed;
     [HideInInspector] public float maxSpeedOverall;
     [HideInInspector] public float distance;
     [HideInInspector] public float distanceOverall;
-     public float money;
-    [HideInInspector] public int maxCombo;
-    [HideInInspector] public int maxComboOverall;
+    [HideInInspector] public float money;
+    public int maxCombo;
+    public int maxComboOverall;
+    [HideInInspector] public float moneyEarned;
   
     private Vector2 currentPoint;
     private Vector2 previousPoint;
@@ -348,22 +349,23 @@ public class Player : Circle
 
     private void saveStatistics()
     {
-        if (score > highScore)
-        {
-            highScore = score;
-        }
+        if (score > highScore) highScore = score;
         if (maxSpeed > maxSpeedOverall) maxSpeedOverall = maxSpeed;
+        if (maxCombo > maxComboOverall) maxComboOverall = maxCombo;
 
         destroyedBallsOverall += destroyedBalls;
         distanceOverall += distance;
 
         money += score / 100;
+        moneyEarned += score / 100;
 
         PlayerPrefs.SetFloat("HighScore", highScore);
         PlayerPrefs.SetFloat("maxSpeed", maxSpeedOverall);
         PlayerPrefs.SetFloat("destroyedBalls", destroyedBallsOverall);
         PlayerPrefs.SetFloat("distance", distanceOverall);
         PlayerPrefs.SetFloat("money", money);
+        PlayerPrefs.SetFloat("moneyEarned", moneyEarned);
+        PlayerPrefs.SetInt("maxCombo", maxComboOverall);
         PlayerPrefs.Save();
     }
 
@@ -374,6 +376,8 @@ public class Player : Circle
         destroyedBallsOverall = PlayerPrefs.GetFloat("destroyedBalls", destroyedBallsOverall);
         distanceOverall = PlayerPrefs.GetFloat("distance", distanceOverall);
         money = PlayerPrefs.GetFloat("money", money);
+        moneyEarned = PlayerPrefs.GetFloat("moneyEarned", moneyEarned);
+        maxComboOverall = PlayerPrefs.GetInt("maxCombo", maxComboOverall);
     }
 
     public void speedAndDistance()
@@ -410,6 +414,7 @@ public class Player : Circle
     {
         currentCombo++;
         comboCurrentTime = comboMaxTime * Mathf.Pow(comboTimeMultiplayer, currentCombo);
+        if (currentCombo > maxCombo) maxCombo = currentCombo;
     }
 
     private void AddPoints(short score)

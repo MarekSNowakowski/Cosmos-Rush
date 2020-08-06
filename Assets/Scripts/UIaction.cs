@@ -21,15 +21,13 @@ public class UIaction : MonoBehaviour
 
 
     [Header("In game UI")]
-    public GameObject comboTimer;
-    public GameObject combo;
-    public GameObject score;
-    public GameObject speedM;
-    public GameObject speed;
-
+    public TextMeshProUGUI comboTimer;
+    public TextMeshProUGUI combo;
+    public TextMeshProUGUI score;
+    public TextMeshProUGUI speedM;
+    public TextMeshProUGUI speed;
     public GameObject effectText;
     public GameObject effectTime;
-
     private TextMeshProUGUI comboTimerT;
     private TextMeshProUGUI comboT;
     private TextMeshProUGUI scoreT;
@@ -37,7 +35,7 @@ public class UIaction : MonoBehaviour
     private TextMeshProUGUI speedT;
     private TextMeshProUGUI effectTimeT;
 
-    [Header("Stats")]
+    [Header("GameOver Stats")]
     public TextMeshProUGUI scoreF;
     public TextMeshProUGUI HighScoreT;
     public TextMeshProUGUI HighScore;
@@ -47,6 +45,14 @@ public class UIaction : MonoBehaviour
     public TextMeshProUGUI money;
     public float startMoney;
     private float moneyDifference;
+
+    [Header("Overall Statistics")]
+    public TextMeshProUGUI highScoreO;
+    public TextMeshProUGUI maxSpeedO;
+    public TextMeshProUGUI destroyedBallsO;
+    public TextMeshProUGUI maxComboO;
+    public TextMeshProUGUI distanceO;
+    public TextMeshProUGUI moneyEarned;
 
 
     private void Start()
@@ -66,6 +72,18 @@ public class UIaction : MonoBehaviour
 
         audioFilter.reverbPreset = menuEffect;
         audioFilter.dryLevel = -dryLevel;
+    }
+
+    public void Statistics()
+    {
+        animator.SetBool("Statistics", true);
+        animator.SetBool("mainMenu", false);
+        highScoreO.text = PlayerPrefs.GetFloat("HighScore").ToString();
+        maxSpeedO.text = PlayerPrefs.GetFloat("maxSpeed").ToString();
+        destroyedBallsO.text = PlayerPrefs.GetFloat("destroyedBalls").ToString();
+        distanceO.text = PlayerPrefs.GetFloat("distance").ToString();
+        moneyEarned.text = PlayerPrefs.GetFloat("moneyEarned").ToString();
+        maxComboO.text = PlayerPrefs.GetInt("maxCombo").ToString();
     }
 
     public void gameOver()
@@ -142,6 +160,7 @@ public class UIaction : MonoBehaviour
     public void GoToMainMenu()
     {
         animator.SetBool("mainMenu", true);
+        animator.SetBool("Statistics", false);
         StopAllCoroutines();
     }
 
@@ -170,5 +189,10 @@ public class UIaction : MonoBehaviour
         {
             effectTimeT.text = player.effectTimer.ToString("F1");
         }
+    }
+
+    public void loadStatistics()
+    {
+
     }
 }
