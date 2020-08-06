@@ -73,6 +73,8 @@ public class Player : Circle
         sr = GetComponent<SpriteRenderer>();
         tr = GetComponent<TrailRenderer>();
         explosionParticles = explosionEffect.GetComponent<ParticleSystem>().main;
+
+        StartCoroutine(turnOnTrail());
     }
 
     public void Start()
@@ -239,8 +241,31 @@ public class Player : Circle
         }
         else if (collision.gameObject.CompareTag("blackHole"))
         {
-            gameOver();
+            Warp(collision.gameObject.GetComponent<BlackHole>().whiteHole);
+            IncreaseCombo();
+            AddPoints(500);
+            //gameOver();
         }
+    }
+
+    void Warp(GameObject whiteHole) 
+    {
+        StartCoroutine(turnOnTrail());
+        transform.position = whiteHole.transform.position;
+        whiteHole.GetComponent<BlackHole>().Warp();
+        rb.velocity *= -0.5f;
+    }
+
+    private IEnumerator turnOnTrail()
+    {
+        float number = 100;
+        tr.time = 0;
+        for (int i = 0; i < number; i++)
+        {
+            yield return new WaitForSeconds(1 / number);
+            tr.time += 1 / number;
+        }
+        tr.time = 1;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -284,6 +309,7 @@ public class Player : Circle
         minVelocity = 6;
         effectTimer = 0;
         oldHighScore = highScore;
+        tr.time = 1;
     }
 
     private void changeTrailColor(Color col)
@@ -373,15 +399,23 @@ public class Player : Circle
 
     public void BallDestroyed(short score)
     {
-        //Increase Combo
-        currentCombo++;
-        comboCurrentTime = comboMaxTime * Mathf.Pow(comboTimeMultiplayer, currentCombo);
+        IncreaseCombo();
 
-        //AddPoints
-        int speedMultiplyer = (int)Math.Round(Convert.ToDouble(rb.velocity.magnitude) / 10, MidpointRounding.AwayFromZero);
-        this.score += score * currentCombo * speedMultiplyer;
+        AddPoints(score);
 
         destroyedBalls++;
+    }
+
+    private void IncreaseCombo()
+    {
+        currentCombo++;
+        comboCurrentTime = comboMaxTime * Mathf.Pow(comboTimeMultiplayer, currentCombo);
+    }
+
+    private void AddPoints(short score)
+    {
+        int speedMultiplyer = (int)Math.Round(Convert.ToDouble(rb.velocity.magnitude) / 10, MidpointRounding.AwayFromZero);
+        this.score += score * currentCombo * speedMultiplyer;
     }
 
     public void setUpStatistics()

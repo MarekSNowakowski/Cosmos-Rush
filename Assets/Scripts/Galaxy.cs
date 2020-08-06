@@ -57,6 +57,18 @@ public class Galaxy : MonoBehaviour
         }
     }
 
+    private void Bound()
+    {
+        int i = 0;
+        var blackHoles = GameObject.FindGameObjectsWithTag("blackHole");
+        var whiteHoles = GameObject.FindGameObjectsWithTag("whiteHole");
+        foreach (var blackHole in blackHoles)
+        {
+            blackHole.GetComponent<BlackHole>().bound(whiteHoles[i]);
+            i++;
+        }
+    }
+
     private void setPlayer()
     {
         player.SetActive(true);
@@ -65,7 +77,7 @@ public class Galaxy : MonoBehaviour
 
     private void Despawn()
     {
-        string[] circleTags = { "100", "200a", "200b", "300", "400", "blackHole", "Effect" };
+        string[] circleTags = { "100", "200a", "200b", "300", "400", "blackHole", "whiteHole", "Effect" };
         foreach (string circleTag in circleTags)
         {
             var clones = GameObject.FindGameObjectsWithTag(circleTag);
@@ -86,6 +98,7 @@ public class Galaxy : MonoBehaviour
         Despawn();
         setPlayer();
         Spawn();
+        Bound();
     }
 
     private Vector3 PointInArea()
