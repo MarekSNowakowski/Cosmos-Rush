@@ -33,20 +33,21 @@ public class Player : Circle
     public float comboMaxTime;
     public float comboCurrentTime;
 
-
-    [HideInInspector] public float score;
-    [HideInInspector] public float highScore;
-    [HideInInspector] public float oldHighScore;
-    [HideInInspector] public float destroyedBalls;
-    [HideInInspector] public float destroyedBallsOverall;
-    [HideInInspector] public float maxSpeed;
-    [HideInInspector] public float maxSpeedOverall;
-    [HideInInspector] public float distance;
-    [HideInInspector] public float distanceOverall;
-    [HideInInspector] public float money;
+    [HideInInspector]
+    [Header("GameOverStatistics")]
+    public float score;
+    public float highScore;
+    public float oldHighScore;
+    public float destroyedBalls;
+    public float destroyedBallsOverall;
+    public float maxSpeed;
+    public float maxSpeedOverall;
+    public float distance;
+    public float distanceOverall;
+    public float money;
     public int maxCombo;
     public int maxComboOverall;
-    [HideInInspector] public float moneyEarned;
+    public float moneyEarned;
   
     private Vector2 currentPoint;
     private Vector2 previousPoint;

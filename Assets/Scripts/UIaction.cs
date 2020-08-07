@@ -77,13 +77,27 @@ public class UIaction : MonoBehaviour
     public void Statistics()
     {
         animator.SetBool("Statistics", true);
-        animator.SetBool("mainMenu", false);
         highScoreO.text = PlayerPrefs.GetFloat("HighScore").ToString();
         maxSpeedO.text = PlayerPrefs.GetFloat("maxSpeed").ToString();
         destroyedBallsO.text = PlayerPrefs.GetFloat("destroyedBalls").ToString();
         distanceO.text = PlayerPrefs.GetFloat("distance").ToString();
         moneyEarned.text = PlayerPrefs.GetFloat("moneyEarned").ToString();
         maxComboO.text = PlayerPrefs.GetInt("maxCombo").ToString();
+    }
+
+    public void Upgrades()
+    {
+        animator.SetBool("Upgrades", true);
+    }
+
+    public void About()
+    {
+        animator.SetBool("About", true);
+    }
+
+    public void Settings()
+    {
+        animator.SetBool("Settings", true);
     }
 
     public void gameOver()
@@ -161,6 +175,9 @@ public class UIaction : MonoBehaviour
     {
         animator.SetBool("mainMenu", true);
         animator.SetBool("Statistics", false);
+        animator.SetBool("About", false);
+        animator.SetBool("Upgrades", false);
+        animator.SetBool("Settings", false);
         StopAllCoroutines();
     }
 
