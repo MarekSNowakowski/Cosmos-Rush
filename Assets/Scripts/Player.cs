@@ -370,7 +370,7 @@ public class Player : Circle
         PlayerPrefs.Save();
     }
 
-    private void loadStatistics()
+    public void loadStatistics()
     {
         highScore = PlayerPrefs.GetFloat("HighScore");
         maxSpeedOverall = PlayerPrefs.GetFloat("maxSpeed", maxSpeedOverall);

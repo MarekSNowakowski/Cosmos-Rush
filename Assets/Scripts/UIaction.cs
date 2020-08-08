@@ -16,8 +16,15 @@ public class UIaction : MonoBehaviour
     [Header("audio")]
     public Camera cam;
     private AudioReverbFilter audioFilter;
+    private AudioSource musicSource;
     public float dryLevel;
     public AudioReverbPreset menuEffect;
+    public Slider musicVolumeSlider;
+    public Slider VolumeSlider;
+    public GameObject muteVol;
+    public GameObject muteM;
+    public GameObject unMuteVol;
+    public GameObject unMuteM;
 
 
     [Header("In game UI")]
@@ -54,6 +61,9 @@ public class UIaction : MonoBehaviour
     public TextMeshProUGUI distanceO;
     public TextMeshProUGUI moneyEarned;
 
+    [Header("MainMenu")]
+    public TextMeshProUGUI mainMenuMoney;
+
 
     private void Start()
     {
@@ -69,16 +79,25 @@ public class UIaction : MonoBehaviour
         effectTimeT = effectTime.GetComponent<TextMeshProUGUI>();
 
         audioFilter = cam.GetComponent<AudioReverbFilter>();
+        musicSource = cam.GetComponent<AudioSource>();
 
         audioFilter.reverbPreset = menuEffect;
         audioFilter.dryLevel = -dryLevel;
+
+        mainMenuMoney.text = PlayerPrefs.GetFloat("money").ToString();
+        
+        VolumeSlider.value = PlayerPrefs.GetFloat("volume", 0.5f);
+        changeVolume();
+
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 0.5f);
+        changeMusicVolume();
     }
 
     public void Statistics()
     {
         animator.SetBool("Statistics", true);
         highScoreO.text = PlayerPrefs.GetFloat("HighScore").ToString();
-        maxSpeedO.text = PlayerPrefs.GetFloat("maxSpeed").ToString();
+        maxSpeedO.text = PlayerPrefs.GetFloat("maxSpeed").ToString("F1");
         destroyedBallsO.text = PlayerPrefs.GetFloat("destroyedBalls").ToString();
         distanceO.text = PlayerPrefs.GetFloat("distance").ToString();
         moneyEarned.text = PlayerPrefs.GetFloat("moneyEarned").ToString();
@@ -98,6 +117,8 @@ public class UIaction : MonoBehaviour
     public void Settings()
     {
         animator.SetBool("Settings", true);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 0.5f);
+        VolumeSlider.value = PlayerPrefs.GetFloat("volume", 0.5f);
     }
 
     public void gameOver()
@@ -124,13 +145,13 @@ public class UIaction : MonoBehaviour
     {
         HighScore.text = player.oldHighScore.ToString();
         animator.SetBool("highScore", false);
-        HighScoreT.text = "NEW" + Environment.NewLine + "HIGH SCORE!";
+        HighScoreT.text = "NEW HIGH SCORE!";
     }
 
     public void highScoreEnd()
     {
         HighScore.text = player.score.ToString();
-        HighScoreT.text = "HIGH SCORE";
+        HighScoreT.text = "HIGH SCORE:";
     }
 
     public IEnumerator addMoney()
@@ -179,6 +200,20 @@ public class UIaction : MonoBehaviour
         animator.SetBool("Upgrades", false);
         animator.SetBool("Settings", false);
         StopAllCoroutines();
+        mainMenuMoney.text = PlayerPrefs.GetFloat("money").ToString();
+    }
+
+    public void ResetProgress()
+    {
+        PlayerPrefs.SetFloat("HighScore", 0);
+        PlayerPrefs.SetFloat("maxSpeed", 0);
+        PlayerPrefs.SetFloat("destroyedBalls", 0);
+        PlayerPrefs.SetFloat("distance", 0);
+        PlayerPrefs.SetFloat("money", 0);
+        PlayerPrefs.SetFloat("moneyEarned", 0);
+        PlayerPrefs.SetInt("maxCombo", 0);
+        PlayerPrefs.Save();
+        player.loadStatistics();
     }
 
     void Update()
@@ -208,8 +243,63 @@ public class UIaction : MonoBehaviour
         }
     }
 
-    public void loadStatistics()
+    public void changeVolume()
     {
+        if (PlayerPrefs.GetFloat("volume") == 0 && VolumeSlider.value != 0)
+        {
+            muteVol.SetActive(true);
+            unMuteVol.SetActive(false);
+        }
+        if (VolumeSlider.value == 0)
+        {
+            muteVol.SetActive(false);
+            unMuteVol.SetActive(true);
+        }
+        PlayerPrefs.SetFloat("volume", VolumeSlider.value);
+        AudioListener.volume = PlayerPrefs.GetFloat("volume");
+    }
 
+    public void changeMusicVolume()
+    {
+        if(PlayerPrefs.GetFloat("musicVolume")==0 && musicVolumeSlider.value != 0)
+        {
+            muteM.SetActive(true);
+            unMuteM.SetActive(false);
+        }
+        if (musicVolumeSlider.value == 0)
+        {
+            muteM.SetActive(false);
+            unMuteM.SetActive(true);
+        }
+        PlayerPrefs.SetFloat("musicVolume", musicVolumeSlider.value);
+        musicSource.volume = PlayerPrefs.GetFloat("musicVolume");
+    }
+
+    public void muteVolume()
+    {
+        PlayerPrefs.SetFloat("volume", 0);
+        AudioListener.volume = PlayerPrefs.GetFloat("volume", 0);
+        VolumeSlider.value = PlayerPrefs.GetFloat("volume", 0);
+    }
+
+    public void muteMusic()
+    {
+        PlayerPrefs.SetFloat("musicVolume", 0);
+        musicSource.volume = PlayerPrefs.GetFloat("musicVolume", 0);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 0);
+    }
+
+    public void unMuteVolume()
+    {
+        PlayerPrefs.SetFloat("volume", 0.5f);
+        AudioListener.volume = PlayerPrefs.GetFloat("volume", 0.5f);
+        VolumeSlider.value = PlayerPrefs.GetFloat("volume", 0.5f);
+    }
+
+    public void unMuteMusic()
+    {
+        PlayerPrefs.SetFloat("musicVolume", 0.5f);
+        musicSource.volume = PlayerPrefs.GetFloat("musicVolume", 0.5f);
+        musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 0.5f);
     }
 }
