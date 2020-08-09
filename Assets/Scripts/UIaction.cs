@@ -205,6 +205,7 @@ public class UIaction : MonoBehaviour
 
     public void ResetProgress()
     {
+        //Statistics
         PlayerPrefs.SetFloat("HighScore", 0);
         PlayerPrefs.SetFloat("maxSpeed", 0);
         PlayerPrefs.SetFloat("destroyedBalls", 0);
@@ -214,6 +215,17 @@ public class UIaction : MonoBehaviour
         PlayerPrefs.SetInt("maxCombo", 0);
         PlayerPrefs.Save();
         player.loadStatistics();
+        //Upgrades
+        PlayerPrefs.SetInt("spikeCrusher", 0);
+        PlayerPrefs.SetInt("warpHoles", 0);
+        PlayerPrefs.SetInt("slowMo", 0);
+        PlayerPrefs.SetInt("force", 0);
+
+        PlayerPrefs.SetInt("blue", 0);
+        PlayerPrefs.SetInt("red", 0);
+        PlayerPrefs.SetInt("violet", 0);
+        PlayerPrefs.SetInt("gold", 0);
+        PlayerPrefs.Save();
     }
 
     void Update()

@@ -195,14 +195,14 @@ public class Player : Circle
         if (rb.velocity.magnitude < minVelocity) return; 
 
         StartCoroutine(KickCo());
-        
+
 
         if (collision.gameObject.CompareTag("100"))
         {
             BallDestroyed(100);
             collision.gameObject.GetComponent<Circle>().explode();
         }
-        else if( collision.gameObject.CompareTag("200a"))
+        else if (collision.gameObject.CompareTag("200a"))
         {
             BallDestroyed(200);
             StopAllCoroutines();
@@ -228,7 +228,12 @@ public class Player : Circle
         }
         else if (collision.gameObject.CompareTag("300"))
         {
-            gameOver();
+            if(PlayerPrefs.GetInt("spikeCrusher",0) > 0)
+            {
+                BallDestroyed(300);
+                collision.gameObject.GetComponent<Circle>().explode();
+
+            } else gameOver();
         }
         else if (collision.gameObject.CompareTag("400"))
         {
@@ -243,10 +248,36 @@ public class Player : Circle
         }
         else if (collision.gameObject.CompareTag("blackHole"))
         {
+            if(PlayerPrefs.GetInt("warpHoles", 0) == 1)
+            {
             Warp(collision.gameObject.GetComponent<BlackHole>().whiteHole);
             IncreaseCombo();
             AddPoints(500);
-            //gameOver();
+            } else gameOver();
+        }
+        else if (collision.gameObject.CompareTag("500"))
+        {
+            if (PlayerPrefs.GetInt("spikeCrusher", 0) > 1)
+            {
+                BallDestroyed(500);
+                collision.gameObject.GetComponent<Circle>().explode();
+
+            }
+            else gameOver();
+        }
+        else if (collision.gameObject.CompareTag("1000"))
+        {
+            if (PlayerPrefs.GetInt("spikeCrusher", 0) > 2)
+            {
+                BallDestroyed(1000);
+                collision.gameObject.GetComponent<Circle>().explode();
+
+            }
+            else gameOver();
+        }
+        else if (collision.gameObject.CompareTag("death"))
+        {
+            gameOver();
         }
     }
 

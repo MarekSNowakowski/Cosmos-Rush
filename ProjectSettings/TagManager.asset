@@ -13,6 +13,9 @@ TagManager:
   - galaxy
   - blackHole
   - whiteHole
+  - 500
+  - 1000
+  - death
   layers:
   - Default
   - TransparentFX
