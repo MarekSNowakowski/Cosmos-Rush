@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -104,11 +103,6 @@ public class UIaction : MonoBehaviour
         maxComboO.text = PlayerPrefs.GetInt("maxCombo").ToString();
     }
 
-    public void Upgrades()
-    {
-        animator.SetBool("Upgrades", true);
-    }
-
     public void About()
     {
         animator.SetBool("About", true);
@@ -199,6 +193,7 @@ public class UIaction : MonoBehaviour
         animator.SetBool("About", false);
         animator.SetBool("Upgrades", false);
         animator.SetBool("Settings", false);
+        animator.SetBool("Colors", false);
         StopAllCoroutines();
         mainMenuMoney.text = PlayerPrefs.GetFloat("money").ToString();
     }
@@ -215,13 +210,17 @@ public class UIaction : MonoBehaviour
         PlayerPrefs.SetInt("maxCombo", 0);
         PlayerPrefs.Save();
         player.loadStatistics();
-        //Upgrades
-        PlayerPrefs.SetInt("spikeCrusher", 0);
-        PlayerPrefs.SetInt("warpHoles", 0);
-        PlayerPrefs.SetInt("slowMo", 0);
-        PlayerPrefs.SetInt("force", 0);
 
-        PlayerPrefs.SetInt("blue", 0);
+        //Upgrades
+        PlayerPrefs.SetInt("spikeCrusher", 0); //max 3
+        PlayerPrefs.SetInt("warpHoles", 0); //max 1
+        PlayerPrefs.SetInt("slowMo", 0); //max 10
+        PlayerPrefs.SetInt("force", 0); //max 10
+
+        PlayerPrefs.SetInt("ballColor", 0);
+
+        //Colors, max 5
+        PlayerPrefs.SetInt("blue", 0);  
         PlayerPrefs.SetInt("red", 0);
         PlayerPrefs.SetInt("violet", 0);
         PlayerPrefs.SetInt("gold", 0);
@@ -313,5 +312,17 @@ public class UIaction : MonoBehaviour
         PlayerPrefs.SetFloat("musicVolume", 0.5f);
         musicSource.volume = PlayerPrefs.GetFloat("musicVolume", 0.5f);
         musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 0.5f);
+    }
+
+    public void Upgrades()
+    {
+        animator.SetBool("Upgrades", true);
+        animator.SetBool("Colors", false);
+    }
+
+    public void Colors()
+    {
+        animator.SetBool("Colors", true);
+        animator.SetBool("Upgrades", false);
     }
 }
