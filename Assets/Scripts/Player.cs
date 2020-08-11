@@ -482,6 +482,12 @@ public class Player : Circle
     {
         slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0));
         BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0));
+        minMaxPower = 100;
+
+        effectDuration = 4;
+        comboMaxTime = 4;
+        comboTimeMultiplayer = 0.92f;
+
 
         switch (PlayerPrefs.GetInt("ballColor", 0))
         {
@@ -489,37 +495,30 @@ public class Player : Circle
                 color = Color.white;
                 //White
                 // - normall
-                effectDuration = 4;
-                comboMaxTime = 4;
-                comboTimeMultiplayer = 0.92f;
                 slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0));
                 BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0));
-                minMaxPower = 100;
                 break;
             case 1:
                 color = Color.blue;
                 //Blue
                 // slowMotion - 0.1
                 // ballPower + 10
-                effectDuration = 4;
-                comboMaxTime = 4;
-                comboTimeMultiplayer = 0.92f;
-                slowmo = 0.3f - (0.01f * PlayerPrefs.GetInt("slowMo", 0));
+                // comboTimeMultiplayer -0.01
+                slowmo = 0.3f - (0.01f * PlayerPrefs.GetInt("slowMo", 0)) - (PlayerPrefs.GetInt("blue",0)*0.02f);
                 BallPower = 15 +(2 * PlayerPrefs.GetInt("blue")) + (1 * PlayerPrefs.GetInt("force", 0));
-                minMaxPower = 100;
+                comboTimeMultiplayer = 0.92f + (0.002f * PlayerPrefs.GetInt("blue"));
+
                 break;
             case 2:
                 color = Color.red;
                 //Red
-                // ballPower + 20
+                // ballPower + 25
                 // SlowMotion + 0.2
-                // effectDuration +1s
-                effectDuration = 5;
-                comboMaxTime = 4;
-                comboTimeMultiplayer = 0.92f;
-                slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0));
-                BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0));
-                minMaxPower = 100;
+                // effectDuration +2s
+                effectDuration = 4 + (0.4f * PlayerPrefs.GetInt("red", 0));
+                slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0)) + (PlayerPrefs.GetInt("red", 0) * 0.04f);
+                BallPower = 20 + (2 * PlayerPrefs.GetInt("force", 0)) + (4*PlayerPrefs.GetInt("red",0));
+                minMaxPower = 100 + (PlayerPrefs.GetInt("red", 0) * 4); 
                 break;
             case 3:
                 color = new Color(58, 0, 83);
@@ -529,11 +528,10 @@ public class Player : Circle
                 // ballPower - 5
                 //slowMotion + 0.1
                 effectDuration = 4;
-                comboMaxTime = 4;
-                comboTimeMultiplayer = 0.92f;
-                slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0));
-                BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0));
-                minMaxPower = 100;
+                comboMaxTime = 4 + (PlayerPrefs.GetInt("violet", 0) * 0.4f);
+                comboTimeMultiplayer = 0.92f + (PlayerPrefs.GetInt("violet", 0) * 0.06f);
+                slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0)) + (PlayerPrefs.GetInt("violet",0) * 0.02f);
+                BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0)) - (1 * PlayerPrefs.GetInt("violet",0));
                 break;
             case 4:
                 color = new Color(100, 84, 0);
@@ -543,12 +541,12 @@ public class Player : Circle
                 // comboTimeMultiplayer -0.01
                 //slowMotion -0.15
                 //BallPower + 15
-                effectDuration = 4;
-                comboMaxTime = 4;
-                comboTimeMultiplayer = 0.92f;
-                slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0));
-                BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0));
-                minMaxPower = 100;
+                effectDuration = 4 - (0.2f * PlayerPrefs.GetInt("gold",0));
+                comboMaxTime = 4 + (0.02f * PlayerPrefs.GetInt("gold",0));
+                comboTimeMultiplayer = 0.93f;
+                slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0)) - (PlayerPrefs.GetInt("gold",0)*0.3f);
+                BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0)) + (PlayerPrefs.GetInt("gold",0)*3);
+                minMaxPower = 110;
                 break;
 
         }

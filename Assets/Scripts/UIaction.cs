@@ -64,6 +64,12 @@ public class UIaction : MonoBehaviour
     public TextMeshProUGUI mainMenuMoney;
     public TextMeshProUGUI upgradeMoney;
 
+    [Header("Upgrades")]
+    public GameObject white;
+    public GameObject blue;
+    public GameObject violet;
+    public GameObject gold;
+
 
     private void Start()
     {
@@ -331,5 +337,14 @@ public class UIaction : MonoBehaviour
     {
         animator.SetBool("Colors", true);
         animator.SetBool("Upgrades", false);
+        setOutline();
+    }
+
+    public void setOutline()
+    {
+        white.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color",0)==0);
+        blue.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color", 0) == 1);
+        violet.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color", 0) == 2);
+        gold.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color", 0) == 3);
     }
 }
