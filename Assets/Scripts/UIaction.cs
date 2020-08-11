@@ -60,8 +60,9 @@ public class UIaction : MonoBehaviour
     public TextMeshProUGUI distanceO;
     public TextMeshProUGUI moneyEarned;
 
-    [Header("MainMenu")]
+    [Header("money")]
     public TextMeshProUGUI mainMenuMoney;
+    public TextMeshProUGUI upgradeMoney;
 
 
     private void Start()
@@ -318,6 +319,12 @@ public class UIaction : MonoBehaviour
     {
         animator.SetBool("Upgrades", true);
         animator.SetBool("Colors", false);
+        UpdateMoney();
+    }
+
+    public void UpdateMoney()
+    {
+        upgradeMoney.text = PlayerPrefs.GetFloat("money").ToString();
     }
 
     public void Colors()
