@@ -11,7 +11,7 @@ public class Upgrade : MonoBehaviour
     public string title;
 
     Animator anim;
-    AudioSource audio;
+    AudioSource audioS;
 
     public TextMeshProUGUI progressText;
     public TextMeshProUGUI titleText;
@@ -26,7 +26,7 @@ public class Upgrade : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        audio = GetComponent<AudioSource>();
+        audioS = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -41,13 +41,14 @@ public class Upgrade : MonoBehaviour
         else if (upgradeName == "violet" && PlayerPrefs.GetInt("violet", 0) > 0) PlayerPrefs.SetInt("color", 2);
         else if (upgradeName == "gold" && PlayerPrefs.GetInt("gold", 0) > 0) PlayerPrefs.SetInt("color", 3);
         PlayerPrefs.Save();
-        Debug.Log(PlayerPrefs.GetInt("color", 0));
     }
 
     public void upgrade()
     {
+#pragma warning disable CS0642
         if (PlayerPrefs.GetInt(upgradeName, 0) == upgradeMax) ;
         else if (PlayerPrefs.GetFloat("money", 0) < costs[PlayerPrefs.GetInt(upgradeName, 0)]) ;
+#pragma warning restore CS0642
         else
         {
             PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money", 0) - costs[PlayerPrefs.GetInt(upgradeName, 0)]);
@@ -55,29 +56,25 @@ public class Upgrade : MonoBehaviour
             PlayerPrefs.Save();
             anim.SetTrigger("Normal");
             setTexts();
-            audio.Play();
+            audioS.Play();
         }
         setColor();
     }
 
-    void setTexts()
+    public void setTexts()
     {
         progressText.text = PlayerPrefs.GetInt(upgradeName, 0) + "/" + upgradeMax;
+        if (upgradeName == "white") progressText.text = "1/1";
         titleText.text = title;
+        benefitsText.text = benefits;
+
         if (PlayerPrefs.GetInt(upgradeName, 0) == upgradeMax)
         {
-            benefitsText.text = "MAX";
-            costText.text = "-";
+            costText.text = "MAX";
             costText2.text = "Upgraded to maximum level";
         }
         else
         {
-            string blue = "slowMotion - 0.1" + Environment.NewLine + "ballPower + 10" + Environment.NewLine + "comboTimeMultiplayer -0.01";
-            string red = 
-
-            progressText.text = PlayerPrefs.GetInt(upgradeName, 0) + "/" + upgradeMax;
-            titleText.text = title;
-            benefitsText.text = benefits;
             costText.text = costs[PlayerPrefs.GetInt(upgradeName, 0)] + "$";
 
             if (PlayerPrefs.GetFloat("money", 0) < costs[PlayerPrefs.GetInt(upgradeName, 0)])

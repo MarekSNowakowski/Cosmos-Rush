@@ -69,7 +69,10 @@ public class UIaction : MonoBehaviour
     public GameObject blue;
     public GameObject violet;
     public GameObject gold;
-
+    public GameObject force;
+    public GameObject slowMo;
+    public GameObject spikeCrusher;
+    public GameObject warpHoles;
 
     private void Start()
     {
@@ -90,7 +93,7 @@ public class UIaction : MonoBehaviour
         audioFilter.reverbPreset = menuEffect;
         audioFilter.dryLevel = -dryLevel;
 
-        mainMenuMoney.text = PlayerPrefs.GetFloat("money").ToString();
+        mainMenuMoney.text = PlayerPrefs.GetFloat("money") + " $";
         
         VolumeSlider.value = PlayerPrefs.GetFloat("volume", 0.5f);
         changeVolume();
@@ -202,7 +205,7 @@ public class UIaction : MonoBehaviour
         animator.SetBool("Settings", false);
         animator.SetBool("Colors", false);
         StopAllCoroutines();
-        mainMenuMoney.text = PlayerPrefs.GetFloat("money").ToString();
+        mainMenuMoney.text = PlayerPrefs.GetFloat("money") + " $";
     }
 
     public void ResetProgress()
@@ -330,7 +333,23 @@ public class UIaction : MonoBehaviour
 
     public void UpdateMoney()
     {
-        upgradeMoney.text = PlayerPrefs.GetFloat("money").ToString();
+        upgradeMoney.text = PlayerPrefs.GetFloat("money") + " $";
+        mainMenuMoney.text = PlayerPrefs.GetFloat("money") + " $";
+
+        setUpUpgradesTexts();
+    }
+
+    public void setUpUpgradesTexts()
+    {
+        white.GetComponent<Upgrade>().setTexts();
+        blue.GetComponent<Upgrade>().setTexts();
+        violet.GetComponent<Upgrade>().setTexts();
+        gold.GetComponent<Upgrade>().setTexts();
+
+        force.GetComponent<Upgrade>().setTexts();
+        slowMo.GetComponent<Upgrade>().setTexts();
+        spikeCrusher.GetComponent<Upgrade>().setTexts();
+        warpHoles.GetComponent<Upgrade>().setTexts();
     }
 
     public void Colors()
