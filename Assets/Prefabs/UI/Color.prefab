@@ -623,6 +623,9 @@ MonoBehaviour:
   costText: {fileID: 6335298537516040579}
   costText2: {fileID: 680385453048303725}
   BuyPanel: {fileID: 1877596600247302044}
+  select: {fileID: 8300000, guid: d66cb53c44a182c4ca4aa74fdaf6a912, type: 3}
+  upgradeSound: {fileID: 8300000, guid: 2823a02697d6a554fb179485ec9df3ce, type: 3}
+  purchaseFailed: {fileID: 8300000, guid: 615d1c69a76c9184085774d18d584e00, type: 3}
   outline: {fileID: 35433579431390972}
 --- !u!114 &6263788729919449664
 MonoBehaviour:

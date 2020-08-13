@@ -20,6 +20,10 @@ public class Upgrade : MonoBehaviour
     public TextMeshProUGUI costText2;
     public GameObject BuyPanel;
 
+    public AudioClip select;
+    public AudioClip upgradeSound;
+    public AudioClip purchaseFailed;
+
     public GameObject outline;
 
 
@@ -36,19 +40,35 @@ public class Upgrade : MonoBehaviour
 
     public void setColor()
     {
-        if (upgradeName == "white") PlayerPrefs.SetInt("color", 0);
-        else if (upgradeName == "blue" && PlayerPrefs.GetInt("blue",0) > 0) PlayerPrefs.SetInt("color", 1);
-        else if (upgradeName == "violet" && PlayerPrefs.GetInt("violet", 0) > 0) PlayerPrefs.SetInt("color", 2);
-        else if (upgradeName == "gold" && PlayerPrefs.GetInt("gold", 0) > 0) PlayerPrefs.SetInt("color", 3);
+        if (upgradeName == "white" && (PlayerPrefs.GetInt("color", 0) != 0))
+        {
+            PlayerPrefs.SetInt("color", 0);
+        }
+        else if (upgradeName == "blue" && PlayerPrefs.GetInt("blue", 0) > 0 && (PlayerPrefs.GetInt("color", 0) != 1))
+        {
+            PlayerPrefs.SetInt("color", 1);
+        }
+        else if (upgradeName == "violet" && PlayerPrefs.GetInt("violet", 0) > 0 && (PlayerPrefs.GetInt("color", 0) != 2))
+        {
+            PlayerPrefs.SetInt("color", 2);
+        }
+        else if (upgradeName == "gold" && PlayerPrefs.GetInt("gold", 0) > 0 && (PlayerPrefs.GetInt("color", 0) != 3))
+        {
+            PlayerPrefs.SetInt("color", 3);
+        }
         PlayerPrefs.Save();
     }
 
     public void upgrade()
     {
-#pragma warning disable CS0642
-        if (PlayerPrefs.GetInt(upgradeName, 0) == upgradeMax) ;
-        else if (PlayerPrefs.GetFloat("money", 0) < costs[PlayerPrefs.GetInt(upgradeName, 0)]) ;
-#pragma warning restore CS0642
+        if (PlayerPrefs.GetInt(upgradeName, 0) == upgradeMax)
+        {
+            PlaySound(purchaseFailed);
+        }
+        else if (PlayerPrefs.GetFloat("money", 0) < costs[PlayerPrefs.GetInt(upgradeName, 0)])
+        {
+            PlaySound(purchaseFailed);
+        }
         else
         {
             PlayerPrefs.SetFloat("money", PlayerPrefs.GetFloat("money", 0) - costs[PlayerPrefs.GetInt(upgradeName, 0)]);
@@ -56,7 +76,7 @@ public class Upgrade : MonoBehaviour
             PlayerPrefs.Save();
             anim.SetTrigger("Normal");
             setTexts();
-            audioS.Play();
+            PlaySound(upgradeSound);
         }
         setColor();
     }
@@ -86,5 +106,11 @@ public class Upgrade : MonoBehaviour
                 costText2.text = "Buy for" + Environment.NewLine + costText.text;
             }
         }
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioS.clip = clip;
+        audioS.Play();
     }
 }

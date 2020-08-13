@@ -69,18 +69,15 @@ public class Player : Circle
 
     public void Awake()
     {
-        line = GetComponent<LineRenderer>();
-        rb = GetComponent<Rigidbody2D>();
-        audioSource = GetComponent<AudioSource>();
-        sr = GetComponent<SpriteRenderer>();
-        tr = GetComponent<TrailRenderer>();
-        explosionParticles = explosionEffect.GetComponent<ParticleSystem>().main;
+        setUpComponents();
 
         StartCoroutine(turnOnTrail());
     }
 
     public void Start()
     {
+        setUpComponents();
+
         loadStatistics();
 
         minimumPower = new Vector2(-minMaxPower, -minMaxPower);
@@ -91,8 +88,6 @@ public class Player : Circle
         setUp();
 
         loadUpgrades();
-
-        color = Color.white;
     }
     
     private void Update()
@@ -141,6 +136,16 @@ public class Player : Circle
             effectTimer -= Time.deltaTime;
         }else if(rb.sharedMaterial.bounciness != 1) effectTimer -= Time.deltaTime;
         Combo();
+    }
+
+    private void setUpComponents()
+    {
+        line = GetComponent<LineRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+        sr = GetComponent<SpriteRenderer>();
+        tr = GetComponent<TrailRenderer>();
+        explosionParticles = explosionEffect.GetComponent<ParticleSystem>().main;
     }
 
     private void Rotating(Vector2 lookAt)
@@ -340,9 +345,12 @@ public class Player : Circle
 
     private void changeColor()
     {
-        sr.color = color;     //PlayerColor changed
-        explosionParticles.startColor = color;     //ParticleColor changed
-        changeTrailColor(color);      //TrailColor changed
+        if(sr != null)
+        {
+            sr.color = color;     //PlayerColor changed
+            explosionParticles.startColor = color;     //ParticleColor changed
+            changeTrailColor(color);      //TrailColor changed
+        }
     }
 
     private void setUp()
@@ -514,12 +522,12 @@ public class Player : Circle
             case 2:
                 color = new Color32(100, 0, 140, 255);
                 //Violet
-                // comboMaxTime + 2s
+                // comboMaxTime + 3s
                 // comboTimeMultiplayer + 0.03
                 // ballPower - 5
                 //slowMotion + 0.1
                 effectDuration = 4;
-                comboMaxTime = 4 + (PlayerPrefs.GetInt("violet", 0) * 0.5f);
+                comboMaxTime = 4.5f + (PlayerPrefs.GetInt("violet", 0) * 0.5f);
                 comboTimeMultiplayer = 0.92f + (PlayerPrefs.GetInt("violet", 0) * 0.007f);
                 slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0)) + (PlayerPrefs.GetInt("violet",0) * 0.02f);
                 BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0)) - (1 * PlayerPrefs.GetInt("violet",0));
