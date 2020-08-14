@@ -16,6 +16,7 @@ TagManager:
   - 500
   - 1000
   - death
+  - wormHole
   layers:
   - Default
   - TransparentFX

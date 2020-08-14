@@ -19,10 +19,6 @@ public class BlackHole : MonoBehaviour
     [HideInInspector]
     public new AudioSource audio;
 
-    void Update()
-    {
-
-    }
 
     public void bound(GameObject whiteHole)
     {

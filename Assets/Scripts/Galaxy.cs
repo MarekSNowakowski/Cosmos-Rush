@@ -5,7 +5,6 @@ using UnityEngine;
 public class Galaxy : MonoBehaviour
 {
     public float repellForce;
-    public GameObject virtualCamera;
     private PolygonCollider2D colider;
     private LineRenderer lr;
     private EdgeCollider2D edgeCollider;
@@ -37,14 +36,14 @@ public class Galaxy : MonoBehaviour
         for (i = 0; i < path.Length; i++)
         {
             tempArray.SetValue(path[i], i);
-            lr.SetPosition(i, new Vector3(path[i].x, path[i].y, 0));
+            lr.SetPosition(i, new Vector3(transform.position.x + path[i].x, transform.position.y + path[i].y, 0));
         }
         tempArray.SetValue(path[0], i);
-        lr.SetPosition(i, new Vector3(path[0].x, path[0].y, 0));
+        lr.SetPosition(i, new Vector3(transform.position.x + path[0].x, transform.position.y + path[0].y, 0));
         edgeCollider.points = tempArray;
     }
 
-    private void Spawn()
+    public void Spawn()
     {
         int i = 0;
         foreach (Object ob in circles)
@@ -57,7 +56,7 @@ public class Galaxy : MonoBehaviour
         }
     }
 
-    private void Bound()
+    public void Bound()
     {
         int i = 0;
         var blackHoles = GameObject.FindGameObjectsWithTag("blackHole");
@@ -75,7 +74,7 @@ public class Galaxy : MonoBehaviour
         player.transform.position = this.transform.position;
     }
 
-    private void Despawn()
+    public void Despawn()
     {
         string[] circleTags = { "100", "200a", "200b", "300", "400", "blackHole", "whiteHole", "500", "1000", "death", "Effect" };
         foreach (string circleTag in circleTags)
@@ -123,16 +122,6 @@ public class Galaxy : MonoBehaviour
     {
         Collider2D[] intersecting = Physics2D.OverlapCircleAll(position, radiusCheck);
         return intersecting.Length != 1;
-    }
-
-    private void OnEnable()
-    {
-        virtualCamera.SetActive(true);
-    }
-
-    private void OnDisable()
-    {
-        virtualCamera.SetActive(false);
     }
 
     /*private void OnTriggerExit2D(Collider2D collision)

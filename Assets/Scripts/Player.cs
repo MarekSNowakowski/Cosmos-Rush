@@ -288,6 +288,15 @@ public class Player : Circle
         {
             gameOver();
         }
+        else if (collision.gameObject.CompareTag("wormHole"))
+        {
+            if (PlayerPrefs.GetFloat("HighScore", 0) >= collision.gameObject.GetComponent<WormHole>().requirement)
+            {
+                wormHoleWarp(collision.gameObject.GetComponent<WormHole>().pair);
+                IncreaseCombo();
+                AddPoints(1000);
+            }
+        }
     }
 
     void Warp(GameObject whiteHole) 
@@ -295,6 +304,14 @@ public class Player : Circle
         StartCoroutine(turnOnTrail());
         transform.position = whiteHole.transform.position;
         whiteHole.GetComponent<BlackHole>().Warp();
+        rb.velocity *= -0.5f;
+    }
+
+    void wormHoleWarp(GameObject wormHole)
+    {
+        StartCoroutine(turnOnTrail());
+        transform.position = wormHole.transform.position;
+        wormHole.GetComponent<WormHole>().Warp();
         rb.velocity *= -0.5f;
     }
 
