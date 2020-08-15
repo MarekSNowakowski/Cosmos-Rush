@@ -32,6 +32,7 @@ public class Player : Circle
     public int currentCombo;
     public float comboMaxTime;
     public float comboCurrentTime;
+    public float galaxyBonus;
 
     [HideInInspector]
     [Header("GameOverStatistics")]
@@ -88,6 +89,8 @@ public class Player : Circle
         setUp();
 
         loadUpgrades();
+
+        galaxyBonus = 1;
     }
     
     private void Update()
@@ -290,11 +293,19 @@ public class Player : Circle
         }
         else if (collision.gameObject.CompareTag("wormHole"))
         {
-            if (PlayerPrefs.GetFloat("HighScore", 0) >= collision.gameObject.GetComponent<WormHole>().requirement)
+            WormHole wormHole = collision.gameObject.GetComponent<WormHole>();
+
+            if (PlayerPrefs.GetFloat("HighScore", 0) >= wormHole.requirement || score >= wormHole.requirement)
             {
-                wormHoleWarp(collision.gameObject.GetComponent<WormHole>().pair);
+                wormHoleWarp(wormHole.pair);
                 IncreaseCombo();
                 AddPoints(1000);
+                galaxyBonus = wormHole.galaxyBonus;
+                UIaction.StartCoroutine(UIaction.enterGalaxyCo(wormHole.galaxyName, wormHole.galaxyBonus));
+            }
+            else
+            {
+                UIaction.StartCoroutine(UIaction.GalaxyLockedCo(wormHole.requirement));
             }
         }
     }
@@ -429,8 +440,8 @@ public class Player : Circle
         destroyedBallsOverall += destroyedBalls;
         distanceOverall += distance;
 
-        money += score / 100;
-        moneyEarned += score / 100;
+        money += Mathf.Round(score / 100);
+        moneyEarned += Mathf.Round(score / 100);
 
         PlayerPrefs.SetFloat("HighScore", highScore);
         PlayerPrefs.SetFloat("maxSpeed", maxSpeedOverall);
@@ -493,7 +504,7 @@ public class Player : Circle
     private void AddPoints(short score)
     {
         int speedMultiplyer = (int)Math.Round(Convert.ToDouble(rb.velocity.magnitude) / 10, MidpointRounding.AwayFromZero);
-        this.score += score * currentCombo * speedMultiplyer;
+        this.score += score * currentCombo * speedMultiplyer * galaxyBonus;
     }
 
     public void setUpStatistics()
@@ -523,7 +534,7 @@ public class Player : Circle
                 //White
                 // - normall
                 slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0));
-                BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0));
+                BallPower = 20 + (2 * PlayerPrefs.GetInt("force", 0));
                 break;
             case 1:
                 color = Color.blue;
@@ -532,7 +543,7 @@ public class Player : Circle
                 // ballPower + 25
                 // comboTimeMultiplayer -0.01
                 slowmo = 0.3f - (0.01f * PlayerPrefs.GetInt("slowMo", 0));
-                BallPower = 20 +(2 * PlayerPrefs.GetInt("blue")) + (4 * PlayerPrefs.GetInt("force", 0));
+                BallPower = 20 + (2 * PlayerPrefs.GetInt("blue")) + (4 * PlayerPrefs.GetInt("force", 0));
                 comboTimeMultiplayer = 0.92f + (0.002f * PlayerPrefs.GetInt("blue"));
                 effectDuration = 4 + (0.4f * PlayerPrefs.GetInt("gold", 0));
                 break;
@@ -547,7 +558,7 @@ public class Player : Circle
                 comboMaxTime = 4.5f + (PlayerPrefs.GetInt("violet", 0) * 0.5f);
                 comboTimeMultiplayer = 0.92f + (PlayerPrefs.GetInt("violet", 0) * 0.007f);
                 slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0)) + (PlayerPrefs.GetInt("violet",0) * 0.02f);
-                BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0)) - (1 * PlayerPrefs.GetInt("violet",0));
+                BallPower = 20 + (2 * PlayerPrefs.GetInt("force", 0)) - (1 * PlayerPrefs.GetInt("violet",0));
                 break;
             case 3:
                 color = new Color32(210, 175, 0, 255);
@@ -561,7 +572,7 @@ public class Player : Circle
                 comboMaxTime = 4 + (0.02f * PlayerPrefs.GetInt("gold",0));
                 comboTimeMultiplayer = 0.93f;
                 slowmo = 0.3f - (0.02f * PlayerPrefs.GetInt("slowMo", 0)) - (PlayerPrefs.GetInt("gold",0)*0.03f);
-                BallPower = 15 + (2 * PlayerPrefs.GetInt("force", 0)) + (PlayerPrefs.GetInt("gold",0)*3);
+                BallPower = 20 + (2 * PlayerPrefs.GetInt("force", 0)) + (PlayerPrefs.GetInt("gold",0)*3);
                 minMaxPower = 110;
                 break;
 

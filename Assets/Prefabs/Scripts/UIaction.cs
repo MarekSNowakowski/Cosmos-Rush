@@ -40,6 +40,7 @@ public class UIaction : MonoBehaviour
     private TextMeshProUGUI speedMT;
     private TextMeshProUGUI speedT;
     private TextMeshProUGUI effectTimeT;
+    public TextMeshProUGUI galaxy;
 
     [Header("GameOver Stats")]
     public TextMeshProUGUI scoreF;
@@ -94,7 +95,7 @@ public class UIaction : MonoBehaviour
         audioFilter.dryLevel = -dryLevel;
 
         mainMenuMoney.text = PlayerPrefs.GetFloat("money") + " $";
-        
+
         VolumeSlider.value = PlayerPrefs.GetFloat("volume", 0.5f);
         changeVolume();
 
@@ -163,7 +164,7 @@ public class UIaction : MonoBehaviour
         var diffConst = player.money - startMoney;
         money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
         yield return new WaitForSeconds(1);
-        for (int j = 12; j  >= 0; j--)
+        for (int j = 12; j >= 0; j--)
         {
             if (Mathf.Pow(10, j) > moneyDifference) yield return null;
             else
@@ -175,7 +176,7 @@ public class UIaction : MonoBehaviour
                     money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
                     if (moneyDifference == 0) break;
                     yield return new WaitForSeconds(0.1f);
-                } while (Mathf.Pow(10, j) < moneyDifference - (Mathf.Pow(10,j)) );
+                } while (Mathf.Pow(10, j) < moneyDifference - (Mathf.Pow(10, j)));
             }
 
         }
@@ -230,7 +231,7 @@ public class UIaction : MonoBehaviour
         PlayerPrefs.SetInt("ballColor", 0);
 
         //Colors, max 5
-        PlayerPrefs.SetInt("blue", 0);  
+        PlayerPrefs.SetInt("blue", 0);
         PlayerPrefs.SetInt("red", 0);
         PlayerPrefs.SetInt("violet", 0);
         PlayerPrefs.SetInt("gold", 0);
@@ -250,15 +251,15 @@ public class UIaction : MonoBehaviour
         speedMT.text = "x" + speedMultiplyer;
         speedT.text = rb.velocity.magnitude.ToString("F1");
 
-        if(player.effectTimer == 0)
+        if (player.effectTimer == 0)
         {
             effectText.SetActive(false);
             effectTime.SetActive(false);
-        }else if(!effectText.activeInHierarchy || !effectTime.activeInHierarchy)
+        } else if (!effectText.activeInHierarchy || !effectTime.activeInHierarchy)
         {
             effectText.SetActive(true);
             effectTime.SetActive(true);
-        }else
+        } else
         {
             effectTimeT.text = player.effectTimer.ToString("F1");
         }
@@ -282,7 +283,7 @@ public class UIaction : MonoBehaviour
 
     public void changeMusicVolume()
     {
-        if(PlayerPrefs.GetFloat("musicVolume")==0 && musicVolumeSlider.value != 0)
+        if (PlayerPrefs.GetFloat("musicVolume") == 0 && musicVolumeSlider.value != 0)
         {
             muteM.SetActive(true);
             unMuteM.SetActive(false);
@@ -361,9 +362,26 @@ public class UIaction : MonoBehaviour
 
     public void setOutline()
     {
-        white.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color",0)==0);
+        white.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color", 0) == 0);
         blue.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color", 0) == 1);
         violet.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color", 0) == 2);
         gold.GetComponent<Upgrade>().outline.SetActive(PlayerPrefs.GetInt("color", 0) == 3);
     }
+
+    public IEnumerator enterGalaxyCo(String galaxyName, float galaxyBonus)
+    {
+        galaxy.text = "Galaxy " + galaxyName + Environment.NewLine + Environment.NewLine + "Score +" + (galaxyBonus - 1) * 100 + "%";
+        galaxy.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3);
+        galaxy.gameObject.SetActive(false);
+    }
+
+    public IEnumerator GalaxyLockedCo(float requirement)
+    {
+        galaxy.text = "High score needed" + Environment.NewLine + Environment.NewLine + requirement + "+";
+        galaxy.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3);
+        galaxy.gameObject.SetActive(false);
+    }
+
 }

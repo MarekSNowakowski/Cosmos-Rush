@@ -17,7 +17,7 @@ public class BlackHole : MonoBehaviour
     private CircleCollider2D area;
 
     [HideInInspector]
-    public new AudioSource audio;
+    public AudioSource audioS;
 
 
     public void bound(GameObject whiteHole)
@@ -27,7 +27,7 @@ public class BlackHole : MonoBehaviour
 
     private void Start()
     {
-        audio = GetComponent<AudioSource>();
+        audioS = GetComponent<AudioSource>();
         scale = Random.Range(minMax.x, minMax.y);
         transform.localScale = new Vector3(scale, scale, 1);
         mass = mass * scale + Random.Range(0, 999);
@@ -48,7 +48,7 @@ public class BlackHole : MonoBehaviour
     public void Warp()
     {
         StartCoroutine(lowerForceCo());
-        audio.Play();
+        audioS.Play();
     }
 
     private IEnumerator lowerForceCo()

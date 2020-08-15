@@ -11,6 +11,8 @@ public class WormHole : MonoBehaviour
     public GameObject pair;
 
     public float requirement;
+    public float galaxyBonus;
+    public string galaxyName;
 
     [HideInInspector]
     private AudioSource audioS;

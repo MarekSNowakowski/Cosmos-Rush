@@ -123,14 +123,4 @@ public class Galaxy : MonoBehaviour
         Collider2D[] intersecting = Physics2D.OverlapCircleAll(position, radiusCheck);
         return intersecting.Length != 1;
     }
-
-    /*private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
-            rb.velocity = Vector2.zero;
-            rb.AddForce((transform.position - collision.transform.position) * repellForce, ForceMode2D.Force); 
-        }
-    }*/
 }
