@@ -17,6 +17,8 @@ TagManager:
   - 1000
   - death
   - wormHole
+  - goldBall
+  - violetBall
   layers:
   - Default
   - TransparentFX

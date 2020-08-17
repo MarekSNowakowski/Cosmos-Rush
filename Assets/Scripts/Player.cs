@@ -212,7 +212,7 @@ public class Player : Circle
         if (collision.gameObject.CompareTag("100"))
         {
             BallDestroyed(100);
-            collision.gameObject.GetComponent<Circle>().explode();
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(100));
         }
         else if (collision.gameObject.CompareTag("200a"))
         {
@@ -222,7 +222,7 @@ public class Player : Circle
             slowEffect.SetActive(true);
             effectTimer = effectDuration;
             StartCoroutine(changeBounceAndColorCo(slowBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
-            collision.gameObject.GetComponent<Circle>().explode();
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(200));
             minVelocity *= slowBouncines;
             rb.velocity *= slowBouncines;
         }
@@ -234,7 +234,7 @@ public class Player : Circle
             fastEffect.SetActive(true);
             effectTimer = effectDuration;
             StartCoroutine(changeBounceAndColorCo(fastBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
-            collision.gameObject.GetComponent<Circle>().explode();
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(200));
             minVelocity *= fastBouncines;
             rb.velocity *= fastBouncines;
         }
@@ -243,7 +243,7 @@ public class Player : Circle
             if(PlayerPrefs.GetInt("spikeCrusher",0) > 0)
             {
                 BallDestroyed(300);
-                collision.gameObject.GetComponent<Circle>().explode();
+                collision.gameObject.GetComponent<Circle>().explode(calcPoints(300));
 
             } else gameOver();
         }
@@ -256,7 +256,7 @@ public class Player : Circle
             madness = true;
             effectTimer = effectDuration;
             StartCoroutine(changeBounceAndColorCo(1, collision.gameObject.GetComponent<SpriteRenderer>().color));
-            collision.gameObject.GetComponent<Circle>().explode();
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(400));
         }
         else if (collision.gameObject.CompareTag("blackHole"))
         {
@@ -272,7 +272,7 @@ public class Player : Circle
             if (PlayerPrefs.GetInt("spikeCrusher", 0) > 1)
             {
                 BallDestroyed(500);
-                collision.gameObject.GetComponent<Circle>().explode();
+                collision.gameObject.GetComponent<Circle>().explode(calcPoints(500));
 
             }
             else gameOver();
@@ -282,7 +282,7 @@ public class Player : Circle
             if (PlayerPrefs.GetInt("spikeCrusher", 0) > 2)
             {
                 BallDestroyed(1000);
-                collision.gameObject.GetComponent<Circle>().explode();
+                collision.gameObject.GetComponent<Circle>().explode(calcPoints(1000));
 
             }
             else gameOver();
@@ -307,6 +307,20 @@ public class Player : Circle
             {
                 UIaction.StartCoroutine(UIaction.GalaxyLockedCo(wormHole.requirement));
             }
+        }
+        else if (collision.gameObject.CompareTag("goldBall"))
+        {
+            BallDestroyed(10000);
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(10000));
+        }
+        else if (collision.gameObject.CompareTag("violetBall"))
+        {
+            IncreaseCombo();
+            IncreaseCombo();
+            IncreaseCombo();
+            IncreaseCombo();
+            BallDestroyed(1000);
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(1000));
         }
     }
 
@@ -343,7 +357,7 @@ public class Player : Circle
         if (collision.gameObject.CompareTag("100"))
         {
             BallDestroyed(100);
-            collision.gameObject.GetComponent<Circle>().explode();
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(100));
             if (slowEffect.activeInHierarchy) rb.velocity *= slowBouncines;
             else if (fastEffect.activeInHierarchy) rb.velocity *= fastBouncines;
             else rb.velocity *= transparentSlow;
@@ -503,8 +517,14 @@ public class Player : Circle
 
     private void AddPoints(short score)
     {
+        this.score += calcPoints(score);
+    }
+
+    public float calcPoints(short score)
+    {
         int speedMultiplyer = (int)Math.Round(Convert.ToDouble(rb.velocity.magnitude) / 10, MidpointRounding.AwayFromZero);
-        this.score += score * currentCombo * speedMultiplyer * galaxyBonus;
+        if (speedMultiplyer == 0) speedMultiplyer = 1;
+        return score * currentCombo * speedMultiplyer * galaxyBonus;
     }
 
     public void setUpStatistics()
