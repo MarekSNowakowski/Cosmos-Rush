@@ -75,6 +75,11 @@ public class UIaction : MonoBehaviour
     public GameObject spikeCrusher;
     public GameObject warpHoles;
 
+    [Header("Ads")]
+    //public AdManager adManager;
+    private bool canContinue = true;
+    public TextMeshProUGUI continueTimer;
+
     private void Start()
     {
         player = playerObject.GetComponent<Player>();
@@ -128,22 +133,72 @@ public class UIaction : MonoBehaviour
 
     public void gameOver()
     {
-        animator.SetBool("gameRunning", false);
-
         audioFilter.reverbPreset = menuEffect;
         audioFilter.dryLevel = -dryLevel;
+        player.StopAllCoroutines();
 
-        scoreF.text = player.score.ToString();
-        HighScore.text = player.highScore.ToString();
-        if (player.oldHighScore != player.highScore)
+        if (canContinue)
         {
-            animator.SetBool("highScore", true);
+            StartCoroutine(continueCo());
         }
-        maxSpeed.text = player.maxSpeed.ToString("F1");
-        distance.text = player.distance.ToString();
-        ballsDestroyed.text = player.destroyedBalls.ToString();
-        moneyDifference = player.money - startMoney;
-        StartCoroutine(addMoney());
+        else
+        {
+            player.saveStatistics();
+            animator.SetBool("gameRunning", false);
+
+            scoreF.text = player.score.ToString();
+            HighScore.text = player.highScore.ToString();
+            if (player.oldHighScore != player.highScore)
+            {
+                animator.SetBool("highScore", true);
+            }
+            maxSpeed.text = player.maxSpeed.ToString("F1");
+            distance.text = player.distance.ToString();
+            ballsDestroyed.text = player.destroyedBalls.ToString();
+            moneyDifference = player.money - startMoney;
+            StartCoroutine(addMoney());
+        }
+    }
+
+    IEnumerator continueCo()
+    {
+        animator.SetBool("canContinue", true);
+        animator.SetBool("gameRunning", false);
+        continueTimer.text = "5";
+        yield return new WaitForSeconds(1f);
+        continueTimer.text = "4";
+        yield return new WaitForSeconds(1f);
+        continueTimer.text = "3";
+        yield return new WaitForSeconds(1f);
+        continueTimer.text = "2";
+        yield return new WaitForSeconds(1f);
+        continueTimer.text = "1";
+        yield return new WaitForSeconds(1f);
+        continueTimer.text = "0";
+        yield return new WaitForSeconds(1f);
+        noThanks();
+    }
+
+    public void continuePlaying()
+    {
+        StopAllCoroutines();
+        canContinue = false;
+        animator.SetBool("canContinue", false);
+        animator.SetBool("gameRunning", true);
+
+        player.gameObject.SetActive(true);
+        player.tr.enabled = true;
+
+        audioFilter.reverbPreset = AudioReverbPreset.Off;
+        audioFilter.dryLevel = 0;
+    }
+
+    public void noThanks()
+    {
+        StopAllCoroutines();
+        canContinue = false;
+        animator.SetBool("canContinue", false);
+        gameOver();
     }
 
     public void highScoreStart()
@@ -186,6 +241,7 @@ public class UIaction : MonoBehaviour
 
     public void newGame()
     {
+        canContinue = true;
         cam.GetComponent<AudioReverbFilter>().dryLevel = 0;
         animator.SetBool("mainMenu", false);
         animator.SetBool("gameRunning", true);

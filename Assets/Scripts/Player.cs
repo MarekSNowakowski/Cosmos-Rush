@@ -60,7 +60,7 @@ public class Player : Circle
     private Rigidbody2D rb;
     private AudioSource audioSource;
     private SpriteRenderer sr;
-    private TrailRenderer tr;
+    public TrailRenderer tr;
     public GameObject fastEffect;
     public GameObject slowEffect;
     public GameObject madnessEffect;
@@ -340,8 +340,9 @@ public class Player : Circle
         rb.velocity *= -0.5f;
     }
 
-    private IEnumerator turnOnTrail()
+    public IEnumerator turnOnTrail()
     {
+        tr.enabled = true;
         float number = 100;
         tr.time = 0;
         for (int i = 0; i < number; i++)
@@ -395,7 +396,7 @@ public class Player : Circle
         }
     }
 
-    private void setUp()
+    public void setUp()
     {
         sr.color = color;
         explosionParticles.startColor = color;
@@ -430,8 +431,9 @@ public class Player : Circle
 
     public void gameOver()
     {
+        StopAllCoroutines();
         tr.enabled = false;
-        saveStatistics();
+        setUp();
         Time.timeScale = 1;
         explode();
         UIaction.gameOver();
@@ -445,7 +447,7 @@ public class Player : Circle
         setUpStatistics();
     }
 
-    private void saveStatistics()
+    public void saveStatistics()
     {
         if (score > highScore) highScore = score;
         if (maxSpeed > maxSpeedOverall) maxSpeedOverall = maxSpeed;
