@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UIaction : MonoBehaviour
 {
     public GameObject playerObject;
-    private Player player;
+    public Player player;
     private Rigidbody2D rb;
     public GameObject gameOverPanel;
     private Animator animator;
@@ -47,7 +47,7 @@ public class UIaction : MonoBehaviour
     public TextMeshProUGUI HighScoreT;
     public TextMeshProUGUI HighScore;
     public TextMeshProUGUI maxSpeed;
-    public TextMeshProUGUI distance;
+    public TextMeshProUGUI maxCombo;
     public TextMeshProUGUI ballsDestroyed;
     public TextMeshProUGUI money;
     public float startMoney;
@@ -153,7 +153,7 @@ public class UIaction : MonoBehaviour
                 animator.SetBool("highScore", true);
             }
             maxSpeed.text = player.maxSpeed.ToString("F1");
-            distance.text = player.distance.ToString();
+            maxCombo.text = player.maxCombo.ToString();
             ballsDestroyed.text = player.destroyedBalls.ToString();
             moneyDifference = player.money - startMoney;
             StartCoroutine(addMoney());
@@ -236,7 +236,7 @@ public class UIaction : MonoBehaviour
 
         }
 
-        money.text = startMoney.ToString();
+        money.text = PlayerPrefs.GetFloat("money",0).ToString();
     }
 
     public void newGame()
@@ -284,9 +284,8 @@ public class UIaction : MonoBehaviour
         PlayerPrefs.SetInt("slowMo", 0); //max 10
         PlayerPrefs.SetInt("force", 0); //max 10
 
-        PlayerPrefs.SetInt("ballColor", 0);
-
         //Colors, max 5
+        PlayerPrefs.SetInt("color", 0);
         PlayerPrefs.SetInt("blue", 0);
         PlayerPrefs.SetInt("red", 0);
         PlayerPrefs.SetInt("violet", 0);

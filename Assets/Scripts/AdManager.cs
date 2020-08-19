@@ -2,6 +2,7 @@
 using UnityEngine.Advertisements;
 using System;
 using UnityEngine.UI;
+using TMPro;
 
 public class AdManager : MonoBehaviour, IUnityAdsListener
 {
@@ -9,15 +10,19 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
     string GooglePlayID = "3773641";
     public bool testMode = false;
     string continueID = "continuePlaying";
-    //string moneyID = "money";
+    string rewardID = "rewardedVideo";
 
     public UIaction UIaction;
 
     private int min = 2;
     private int max = 5;
     public int gamesLeft;
+    private float reward;
 
     public Button continueButton;
+    public Button rewardButton;
+
+    public TextMeshProUGUI rewardAmountText;
 
     void Start()
     {
@@ -26,8 +31,10 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
         Advertisement.AddListener(this);
 
         continueButton.enabled = false;
+        rewardButton.enabled = false;
 
         randGamesLeft();
+        decideReward();
     }
 
     public void play()
@@ -59,12 +66,25 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
         }
     }
 
-    public void ShowRewardedVideo()
+    public void ShowContinueVideo()
     {
         // Check if UnityAds ready before calling Show method:
         if (Advertisement.IsReady(continueID))
         {
             Advertisement.Show(continueID);
+        }
+        else
+        {
+            Debug.Log("Rewarded video is not ready at the moment! Please try again later!");
+        }
+    }
+
+    public void ShowRewardedVideo()
+    {
+        // Check if UnityAds ready before calling Show method:
+        if (Advertisement.IsReady(rewardID))
+        {
+            Advertisement.Show(rewardID);
         }
         else
         {
@@ -83,12 +103,28 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
             {
                 UIaction.continuePlaying();
             }
+            if (placementId == rewardID)
+            {
+                UIaction.player.loadStatistics();
+                UIaction.player.money += reward;
+                UIaction.player.moneyEarned += reward;
+
+                PlayerPrefs.SetFloat("money", UIaction.player.money);
+                PlayerPrefs.SetFloat("moneyEarned", UIaction.player.moneyEarned);
+                PlayerPrefs.Save();
+
+                UIaction.UpdateMoney();
+            }
         }
         else if (showResult == ShowResult.Skipped)
         {
             if (placementId == continueID)
             {
                 UIaction.noThanks();
+            }
+            if (placementId == rewardID)
+            {
+
             }
         }
         else if (showResult == ShowResult.Failed)
@@ -97,10 +133,15 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
             {
                 UIaction.noThanks();
             }
+            if (placementId == rewardID)
+            {
+
+            }
             Debug.LogWarning("The ad did not finish due to an error.");
         }
 
         continueButton.enabled = false;
+        rewardButton.enabled = false;
     }
 
     public void OnUnityAdsReady(string placementId)
@@ -111,6 +152,24 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
             // Optional actions to take when the placement becomes ready(For example, enable the rewarded ads button)
             continueButton.enabled = true;
         }
+        if (placementId == rewardID)
+        {
+            decideReward();
+            rewardButton.enabled = true;
+        }
+    }
+
+    void decideReward()
+    {
+        if (PlayerPrefs.GetFloat("moneyEarned", 0) < 10000) reward = 1000;
+        else if (PlayerPrefs.GetFloat("moneyEarned", 0) < 50000) reward = 2500;
+        else if (PlayerPrefs.GetFloat("moneyEarned", 0) < 100000) reward = 5000;
+        else if (PlayerPrefs.GetFloat("moneyEarned", 0) < 500000) reward = 10000;
+        else if (PlayerPrefs.GetFloat("moneyEarned", 0) < 1000000) reward = 25000;
+        else if (PlayerPrefs.GetFloat("moneyEarned", 0) < 5000000) reward = 50000;
+        else reward = 1000000;
+
+        rewardAmountText.text = reward + " $";
     }
 
     public void OnUnityAdsDidError(string message)

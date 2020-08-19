@@ -433,9 +433,9 @@ public class Player : Circle
     {
         StopAllCoroutines();
         tr.enabled = false;
-        setUp();
         Time.timeScale = 1;
         explode();
+        setUp();
         UIaction.gameOver();
     }
 
