@@ -113,6 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 6914856747807358667, guid: 6e4d3a38e24912049bd1145a27bc7986,
     type: 3}
+  scoreEffect: {fileID: 6914856747807358667, guid: 96933f793c6fae245b0c7f181ba1e400,
+    type: 3}
   explosionSounds:
   - {fileID: 8300000, guid: c36d0f02d13ba114993e2bf9c1bdf0e9, type: 3}
   - {fileID: 8300000, guid: d508ee9ae41425c47a6e8c2fd93d11d0, type: 3}

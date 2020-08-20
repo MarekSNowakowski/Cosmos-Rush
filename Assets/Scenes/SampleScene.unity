@@ -334,7 +334,7 @@ PrefabInstance:
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -355
+      value: -350
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
@@ -1080,7 +1080,7 @@ PrefabInstance:
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 795
+      value: 395
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
@@ -4696,12 +4696,12 @@ PrefabInstance:
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 990
+      value: 605
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 690
+      value: 710
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
@@ -4938,7 +4938,7 @@ Camera:
   far clip plane: 1000
   field of view: 19
   orthographic: 1
-  orthographic size: 1
+  orthographic size: 2
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -5131,7 +5131,7 @@ PrefabInstance:
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -975
+      value: -595
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
@@ -8075,7 +8075,7 @@ PrefabInstance:
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -355
+      value: -350
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
@@ -11553,14 +11553,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -200, y: 400}
-      - {x: -20, y: 800}
-      - {x: 20, y: 800}
-      - {x: 200, y: 400}
+    - - {x: -220, y: 260}
+      - {x: -20, y: 400}
+      - {x: 20, y: 400}
+      - {x: 220, y: 260}
       - {x: 140, y: 200}
-      - {x: 200, y: -100}
-      - {x: 0, y: -250}
-      - {x: -200, y: -100}
+      - {x: 200, y: 0}
+      - {x: 0, y: -200}
+      - {x: -200, y: 0}
       - {x: -140, y: 200}
 --- !u!114 &927111487
 MonoBehaviour:
@@ -14830,7 +14830,7 @@ PrefabInstance:
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 805
+      value: 405
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
@@ -16711,16 +16711,16 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1000, y: 700}
-      - {x: -980, y: 700}
-      - {x: -950, y: 630}
+    - - {x: -600, y: 720}
+      - {x: -600, y: 700}
+      - {x: -700, y: 600}
       - {x: -700, y: 350}
       - {x: -760, y: -30}
       - {x: -600, y: -350}
       - {x: -600, y: -370}
-      - {x: -1200, y: -30}
-      - {x: -1280, y: 360}
-      - {x: -1050, y: 630}
+      - {x: -1000, y: -30}
+      - {x: -900, y: 600}
+      - {x: -700, y: 800}
 --- !u!224 &1389364631
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17507,16 +17507,16 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1000, y: 700}
-      - {x: 980, y: 700}
-      - {x: 950, y: 630}
+    - - {x: 600, y: 720}
+      - {x: 600, y: 700}
+      - {x: 700, y: 600}
       - {x: 700, y: 350}
       - {x: 760, y: -30}
       - {x: 600, y: -350}
       - {x: 600, y: -370}
-      - {x: 1200, y: -30}
-      - {x: 1280, y: 360}
-      - {x: 1050, y: 630}
+      - {x: 1000, y: -30}
+      - {x: 900, y: 600}
+      - {x: 700, y: 800}
 --- !u!224 &1428530813
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20148,12 +20148,12 @@ PrefabInstance:
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -990
+      value: -605
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 690
+      value: 710
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
@@ -21624,7 +21624,7 @@ PrefabInstance:
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 975
+      value: 595
       objectReference: {fileID: 0}
     - target: {fileID: 5669124631386763746, guid: 766696f60352eb04db5002111a5b2e99,
         type: 3}
@@ -23120,12 +23120,12 @@ PolygonCollider2D:
     - - {x: 600, y: -370}
       - {x: 600, y: -350}
       - {x: 330, y: -500}
-      - {x: 0, y: -280}
+      - {x: 0, y: -300}
       - {x: -330, y: -500}
       - {x: -600, y: -350}
       - {x: -600, y: -370}
       - {x: -400, y: -600}
-      - {x: 0, y: -800}
+      - {x: 0, y: -700}
       - {x: 400, y: -600}
 --- !u!224 &1876194185
 RectTransform:
@@ -26239,17 +26239,17 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -230, y: 1300}
-      - {x: 0, y: 1600}
-      - {x: 230, y: 1300}
-      - {x: 1000, y: 700}
-      - {x: 980, y: 700}
-      - {x: 220, y: 1000}
-      - {x: 20, y: 800}
-      - {x: -20, y: 800}
-      - {x: -220, y: 1000}
-      - {x: -980, y: 700}
-      - {x: -1000, y: 700}
+    - - {x: -200, y: 850}
+      - {x: 0, y: 1000}
+      - {x: 200, y: 850}
+      - {x: 600, y: 720}
+      - {x: 600, y: 700}
+      - {x: 150, y: 500}
+      - {x: 20, y: 400}
+      - {x: -20, y: 400}
+      - {x: -150, y: 500}
+      - {x: -600, y: 700}
+      - {x: -600, y: 720}
 --- !u!224 &2091963894
 RectTransform:
   m_ObjectHideFlags: 0
