@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5936395736314464985}
   - component: {fileID: 3385083927654203505}
   - component: {fileID: 5035198192385231120}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BlackHole
   m_TagString: blackHole
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ MonoBehaviour:
   G: 0.8
   whiteHole: {fileID: 0}
   minMax: {x: 0.75, y: 1.25}
-  audio: {fileID: 0}
+  audioS: {fileID: 0}
 --- !u!330 &5936395736314464985
 ParticleSystemForceField:
   m_ObjectHideFlags: 0

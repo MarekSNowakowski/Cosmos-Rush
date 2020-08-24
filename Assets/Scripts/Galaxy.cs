@@ -76,7 +76,7 @@ public class Galaxy : MonoBehaviour
 
     public void Despawn()
     {
-        string[] circleTags = { "100", "200a", "200b", "300", "400", "blackHole", "whiteHole", "500", "1000", "death", "Effect", "goldBall", "violetBall" };
+        string[] circleTags = { "100", "200a", "200b", "300", "400", "blackHole", "whiteHole", "500", "1000", "death", "Effect", "goldBall", "violetBall", "autoBall", "transparentBall" };
         foreach (string circleTag in circleTags)
         {
             var clones = GameObject.FindGameObjectsWithTag(circleTag);

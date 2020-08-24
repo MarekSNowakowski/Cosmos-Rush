@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1923843031703928663}
   - component: {fileID: 581305476755405036}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Layer
   m_TagString: death
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7235944496486571762}
   - component: {fileID: 8634191693624011714}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Layer (1)
   m_TagString: death
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 5669124631386763748}
   - component: {fileID: 5669124631386763678}
   - component: {fileID: 6891753446120104279}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Spike4
   m_TagString: death
   m_Icon: {fileID: 0}
@@ -320,7 +320,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3394667297585056375}
   - component: {fileID: 3317256441343782290}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Layer (2)
   m_TagString: death
   m_Icon: {fileID: 0}

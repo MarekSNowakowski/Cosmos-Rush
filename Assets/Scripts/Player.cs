@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -26,6 +27,12 @@ public class Player : Circle
     public float fastBouncines;
     public float transparentSlow;
     bool madness;
+
+    [Header("Auto")]
+    public bool auto;
+    public CircleCollider2D autoCol;
+    public bool targetLocked;
+    public Transform target;
 
     [Header("Statistics")]
     public float comboTimeMultiplayer; //comboMaxTime shortens with every combo
@@ -64,9 +71,11 @@ public class Player : Circle
     public GameObject fastEffect;
     public GameObject slowEffect;
     public GameObject madnessEffect;
+    public GameObject autoEffect;
     public Color color;
     ParticleSystem.MainModule explosionParticles;
     public UIaction UIaction;
+
 
     public void Awake()
     {
@@ -137,9 +146,80 @@ public class Player : Circle
             Time.timeScale = 1f;
             endline();
             effectTimer -= Time.deltaTime;
-        }else if(rb.sharedMaterial.bounciness != 1) effectTimer -= Time.deltaTime;
+        }
+        if(auto)
+        {
+            if (targetLocked && target!=null)
+            {
+                var moveDist = 0.5f;
+
+                var dir = target.position - transform.position;
+
+                if (dir.magnitude <= moveDist)
+                {
+                    //rb.velocity = Vector2.zero;
+                    transform.position = target.position;
+                }
+                else
+                {
+                    //transform.position += dir.normalized * Time.deltaTime * BallPower/2;
+                    rb.velocity = dir.normalized * BallPower/2;
+                }
+                //rb.velocity = new Vector2(target.transform.position.x - transform.position.x, target.transform.position.y - transform.position.y).normalized * ballForce * 10;
+                //target.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            else
+            {
+                target = GetClosestEnemy(lookForTargets(), transform);
+                if (target == null) targetLocked = false;
+                else targetLocked = true;
+            }
+            if (target == null || target.position == transform.position)
+            {
+                target = GetClosestEnemy(lookForTargets(), transform);
+                //rb.velocity = Vector2.zero;
+            }
+        }
+        else if(rb.sharedMaterial.bounciness != 1) effectTimer -= Time.deltaTime;
         Combo();
     }
+
+    #region auto
+
+    List<Transform> lookForTargets()
+    {
+        List<Collider2D> targets = new List<Collider2D>(10);
+        List<Transform> targetsTransform = new List<Transform>(10);
+
+        ContactFilter2D contactFilter = new ContactFilter2D();
+        contactFilter.layerMask = 1 << 0;
+        contactFilter.useLayerMask = true;
+        autoCol.OverlapCollider(contactFilter, targets);
+
+        foreach (Collider2D target in targets) targetsTransform.Add(target.transform);
+
+        return targetsTransform;
+    }
+
+    Transform GetClosestEnemy(List<Transform> enemies, Transform fromThis)
+    {
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = fromThis.position;
+        foreach (Transform potentialTarget in enemies)
+        {
+            Vector3 directionToTarget = potentialTarget.position - currentPosition;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+            if (dSqrToTarget < closestDistanceSqr)
+            {
+                closestDistanceSqr = dSqrToTarget;
+                bestTarget = potentialTarget;
+            }
+        }
+        return bestTarget;
+    }
+
+    #endregion
 
     private void setUpComponents()
     {
@@ -204,7 +284,7 @@ public class Player : Circle
         speedAndDistance();
         Rotating(rb.velocity);
 
-        if (rb.velocity.magnitude < minVelocity) return; 
+        if (rb.velocity.magnitude < minVelocity && !auto) return;
 
         StartCoroutine(KickCo());
 
@@ -217,30 +297,36 @@ public class Player : Circle
         else if (collision.gameObject.CompareTag("200a"))
         {
             BallDestroyed(200);
-            StopAllCoroutines();
-            setUp();
-            slowEffect.SetActive(true);
-            effectTimer = effectDuration;
-            StartCoroutine(changeBounceAndColorCo(slowBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
+            if(!auto)
+            {
+                StopAllCoroutines();
+                setUp();
+                slowEffect.SetActive(true);
+                effectTimer = effectDuration;
+                StartCoroutine(changeBounceAndColorCo(slowBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
+                minVelocity *= slowBouncines;
+                rb.velocity *= slowBouncines;
+            }
             collision.gameObject.GetComponent<Circle>().explode(calcPoints(200));
-            minVelocity *= slowBouncines;
-            rb.velocity *= slowBouncines;
         }
         else if (collision.gameObject.CompareTag("200b"))
         {
             BallDestroyed(200);
-            StopAllCoroutines();
-            setUp();
-            fastEffect.SetActive(true);
-            effectTimer = effectDuration;
-            StartCoroutine(changeBounceAndColorCo(fastBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
+            if(!auto)
+            {
+                StopAllCoroutines();
+                setUp();
+                fastEffect.SetActive(true);
+                effectTimer = effectDuration;
+                StartCoroutine(changeBounceAndColorCo(fastBouncines, collision.gameObject.GetComponent<SpriteRenderer>().color));
+                minVelocity *= fastBouncines;
+                rb.velocity *= fastBouncines;
+            }
             collision.gameObject.GetComponent<Circle>().explode(calcPoints(200));
-            minVelocity *= fastBouncines;
-            rb.velocity *= fastBouncines;
         }
         else if (collision.gameObject.CompareTag("300"))
         {
-            if(PlayerPrefs.GetInt("spikeCrusher",0) > 0)
+            if (PlayerPrefs.GetInt("spikeCrusher", 0) > 0 || auto)
             {
                 BallDestroyed(300);
                 collision.gameObject.GetComponent<Circle>().explode(calcPoints(300));
@@ -250,26 +336,29 @@ public class Player : Circle
         else if (collision.gameObject.CompareTag("400"))
         {
             BallDestroyed(400);
-            StopAllCoroutines();
-            setUp();
-            madnessEffect.SetActive(true);
-            madness = true;
-            effectTimer = effectDuration;
-            StartCoroutine(changeBounceAndColorCo(1, collision.gameObject.GetComponent<SpriteRenderer>().color));
+            if(!auto)
+            {
+                StopAllCoroutines();
+                setUp();
+                madnessEffect.SetActive(true);
+                madness = true;
+                effectTimer = effectDuration;
+                StartCoroutine(changeBounceAndColorCo(1, collision.gameObject.GetComponent<SpriteRenderer>().color));
+            }
             collision.gameObject.GetComponent<Circle>().explode(calcPoints(400));
         }
         else if (collision.gameObject.CompareTag("blackHole"))
         {
-            if(PlayerPrefs.GetInt("warpHoles", 0) == 1)
+            if (PlayerPrefs.GetInt("warpHoles", 0) == 1 || auto)
             {
-            Warp(collision.gameObject.GetComponent<BlackHole>().whiteHole);
-            IncreaseCombo();
-            AddPoints(500);
+                Warp(collision.gameObject.GetComponent<BlackHole>().whiteHole);
+                IncreaseCombo();
+                AddPoints(500);
             } else gameOver();
         }
         else if (collision.gameObject.CompareTag("500"))
         {
-            if (PlayerPrefs.GetInt("spikeCrusher", 0) > 1)
+            if (PlayerPrefs.GetInt("spikeCrusher", 0) > 1 || auto)
             {
                 BallDestroyed(500);
                 collision.gameObject.GetComponent<Circle>().explode(calcPoints(500));
@@ -279,7 +368,7 @@ public class Player : Circle
         }
         else if (collision.gameObject.CompareTag("1000"))
         {
-            if (PlayerPrefs.GetInt("spikeCrusher", 0) > 2)
+            if (PlayerPrefs.GetInt("spikeCrusher", 0) > 2 || auto)
             {
                 BallDestroyed(1000);
                 collision.gameObject.GetComponent<Circle>().explode(calcPoints(1000));
@@ -322,6 +411,30 @@ public class Player : Circle
             BallDestroyed(1000);
             collision.gameObject.GetComponent<Circle>().explode(calcPoints(1000));
         }
+        else if (collision.gameObject.CompareTag("autoBall"))
+        {
+            //rb.velocity = Vector2.zero;
+            BallDestroyed(700);
+            StopAllCoroutines();
+            setUp();
+            autoEffect.SetActive(true);
+            auto = true;
+            madness = true;
+            effectTimer = effectDuration;
+            StartCoroutine(changeBounceAndColorCo(0, collision.gameObject.GetComponent<SpriteRenderer>().color));
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(700));
+        }
+    }
+
+    public void transparentBall(GameObject ball)
+    {
+            StartCoroutine(KickCo());
+
+            BallDestroyed(100);
+            ball.gameObject.GetComponent<Circle>().explode(calcPoints(100));
+            if (slowEffect.activeInHierarchy) rb.velocity *= slowBouncines;
+            else if (fastEffect.activeInHierarchy) rb.velocity *= fastBouncines;
+            else rb.velocity *= transparentSlow;
     }
 
     void Warp(GameObject whiteHole) 
@@ -330,6 +443,7 @@ public class Player : Circle
         transform.position = whiteHole.transform.position;
         whiteHole.GetComponent<BlackHole>().Warp();
         rb.velocity *= -0.5f;
+        target = null;
     }
 
     void wormHoleWarp(GameObject wormHole)
@@ -338,6 +452,7 @@ public class Player : Circle
         transform.position = wormHole.transform.position;
         wormHole.GetComponent<WormHole>().Warp();
         rb.velocity *= -0.5f;
+        target = null;
     }
 
     public IEnumerator turnOnTrail()
@@ -355,15 +470,7 @@ public class Player : Circle
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("100"))
-        {
-            BallDestroyed(100);
-            collision.gameObject.GetComponent<Circle>().explode(calcPoints(100));
-            if (slowEffect.activeInHierarchy) rb.velocity *= slowBouncines;
-            else if (fastEffect.activeInHierarchy) rb.velocity *= fastBouncines;
-            else rb.velocity *= transparentSlow;
-            StartCoroutine(KickCo());
-        }
+
     }
 
     private IEnumerator changeBounceAndColorCo(float bounc, Color col)
@@ -405,11 +512,15 @@ public class Player : Circle
         slowEffect.SetActive(false);
         fastEffect.SetActive(false);
         madnessEffect.SetActive(false);
+        autoEffect.SetActive(false);
         madness = false;
-        minVelocity = 6;
+        auto = false;
+        minVelocity = 5.1f;
         effectTimer = 0;
         oldHighScore = highScore;
         tr.time = 1;
+        target = null;
+        targetLocked = false;
     }
 
     private void changeTrailColor(Color col)

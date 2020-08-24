@@ -10,11 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 5669124631386763746}
   - component: {fileID: 5669124631386763749}
+  - component: {fileID: 7270536790136805085}
   - component: {fileID: 5669124631386763748}
   - component: {fileID: 5669124631386763678}
+  - component: {fileID: 6753672100318201710}
   m_Layer: 0
   m_Name: TransparentBall
-  m_TagString: 100
+  m_TagString: transparentBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,6 +85,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7270536790136805085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669124631386763751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fa0dcec8e269274eb556ec62f2eab8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!58 &5669124631386763748
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -119,3 +133,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c36d0f02d13ba114993e2bf9c1bdf0e9, type: 3}
   - {fileID: 8300000, guid: d508ee9ae41425c47a6e8c2fd93d11d0, type: 3}
   - {fileID: 8300000, guid: 941f56360b5d5ff4f83ee17730af90b8, type: 3}
+--- !u!58 &6753672100318201710
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669124631386763751}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.1
