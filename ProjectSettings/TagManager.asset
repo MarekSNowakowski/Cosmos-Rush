@@ -21,6 +21,7 @@ TagManager:
   - violetBall
   - autoBall
   - transparentBall
+  - particleArea
   layers:
   - Default
   - TransparentFX

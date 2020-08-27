@@ -76,6 +76,9 @@ public class Player : Circle
     ParticleSystem.MainModule explosionParticles;
     public UIaction UIaction;
 
+    public CircleCollider2D particleArea;
+    public BoxCollider2D particleAreaCamera;
+
 
     public void Awake()
     {
@@ -714,5 +717,4 @@ public class Player : Circle
         changeColor();
 
     }
-
 }

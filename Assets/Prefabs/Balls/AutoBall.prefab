@@ -12,12 +12,13 @@ GameObject:
   - component: {fileID: 5669124631386763749}
   - component: {fileID: 5669124631386763748}
   - component: {fileID: 5669124631386763678}
+  - component: {fileID: 4095484492578373261}
   m_Layer: 0
   m_Name: AutoBall
   m_TagString: autoBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5669124631386763746
 Transform:
@@ -122,6 +123,19 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1071bad9d12496743920cebcef2eb133, type: 3}
   - {fileID: 8300000, guid: 48a3051bf6694eb4692dd8fd854bf81a, type: 3}
   - {fileID: 8300000, guid: eca96d75a7158944c88323530e0268ce, type: 3}
+--- !u!114 &4095484492578373261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669124631386763751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6386e50d80d2ac046876abf7415f4370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPS: {fileID: 1740139693567405105}
 --- !u!1001 &5174836391051350781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,6 +147,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AutoEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 6914856747807358667, guid: da1336d9820c0054daf261f7164aa39e,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 6914856747807358670, guid: da1336d9820c0054daf261f7164aa39e,
         type: 3}
@@ -194,6 +213,12 @@ PrefabInstance:
 --- !u!4 &1740139693567405107 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6914856747807358670, guid: da1336d9820c0054daf261f7164aa39e,
+    type: 3}
+  m_PrefabInstance: {fileID: 5174836391051350781}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1740139693567405105 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6914856747807358668, guid: da1336d9820c0054daf261f7164aa39e,
     type: 3}
   m_PrefabInstance: {fileID: 5174836391051350781}
   m_PrefabAsset: {fileID: 0}

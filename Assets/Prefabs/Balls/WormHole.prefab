@@ -16,12 +16,13 @@ GameObject:
   - component: {fileID: 5035198192385231120}
   - component: {fileID: 5137272514805988184}
   - component: {fileID: 2600112104827243458}
+  - component: {fileID: 2371030330282067903}
   m_Layer: 0
   m_Name: WormHole
   m_TagString: wormHole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &5669124631386763746
 Transform:
@@ -5441,4 +5442,18 @@ MonoBehaviour:
   travelToGalaxy: {fileID: 0}
   pair: {fileID: 0}
   requirement: 0
-  audio: {fileID: 0}
+  galaxyBonus: 0
+  galaxyName: 
+--- !u!114 &2371030330282067903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5669124631386763751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6386e50d80d2ac046876abf7415f4370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectPS: {fileID: 3385083927654203505}

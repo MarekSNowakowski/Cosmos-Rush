@@ -45,6 +45,8 @@ public class Galaxy : MonoBehaviour
 
     public void Spawn()
     {
+        player.GetComponent<Player>().particleArea.enabled = false;
+
         int i = 0;
         foreach (Object ob in circles)
         {
@@ -54,6 +56,8 @@ public class Galaxy : MonoBehaviour
             }
             i++;
         }
+
+        player.GetComponent<Player>().particleArea.enabled = true;
     }
 
     public void Bound()
