@@ -284,7 +284,7 @@ public class Player : Circle
         speedAndDistance();
         Rotating(rb.velocity);
 
-        if (rb.velocity.magnitude < minVelocity && !auto) return;
+        //if (rb.velocity.magnitude < minVelocity && !auto) return;
 
         StartCoroutine(KickCo());
 
