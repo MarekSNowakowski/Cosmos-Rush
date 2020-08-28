@@ -189,7 +189,7 @@ public class UIaction : MonoBehaviour
         player.gameObject.SetActive(true);
         player.tr.enabled = true;
 
-        audioFilter.reverbPreset = AudioReverbPreset.Off;
+        audioFilter.reverbPreset = AudioReverbPreset.User;
         audioFilter.dryLevel = 0;
     }
 
@@ -247,7 +247,7 @@ public class UIaction : MonoBehaviour
         animator.SetBool("gameRunning", true);
         gameOverPanel.SetActive(false);
 
-        audioFilter.reverbPreset = AudioReverbPreset.Off;
+        audioFilter.reverbPreset = AudioReverbPreset.User;
         audioFilter.dryLevel = 0;
         startMoney = PlayerPrefs.GetFloat("money");
         StopAllCoroutines();

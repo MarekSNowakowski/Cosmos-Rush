@@ -37,7 +37,6 @@ public class Circle : MonoBehaviour
         Destroy(effect, effectTime);
         Destroy(scoreE, effectTime);
 
-        if (this.gameObject.CompareTag("Player")) this.gameObject.SetActive(false);
-        else Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

@@ -77,7 +77,8 @@ public class Player : Circle
     public UIaction UIaction;
 
     public CircleCollider2D particleArea;
-    public BoxCollider2D particleAreaCamera;
+
+    public Animator slowMoAnim;
 
 
     public void Awake()
@@ -114,6 +115,7 @@ public class Player : Circle
             Time.timeScale = slowmo;
             Time.fixedDeltaTime = 0.02F * Time.timeScale;
             speedAndDistance();
+            slowMoAnim.SetBool("slowMo",true);
         }
         if (Input.GetMouseButton(0) && !madness)
         {
@@ -143,6 +145,7 @@ public class Player : Circle
             audioSource.Play();
             playerPS.Play();
             speedAndDistance();
+            slowMoAnim.SetBool("slowMo", false);
         }
         if(madness)
         {
@@ -469,11 +472,6 @@ public class Player : Circle
             tr.time += 1 / number;
         }
         tr.time = 1;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-
     }
 
     private IEnumerator changeBounceAndColorCo(float bounc, Color col)
