@@ -31,6 +31,8 @@ public class WormHole : MonoBehaviour
         thisGalaxy.Spawn();
         thisGalaxy.Bound();
         StartCoroutine(turnOffCo());
+        if(this.galaxyBonus == 1.25) { CloudOnce.Achievements.andromeda.Unlock(); }
+        if(this.galaxyBonus == 2) { CloudOnce.Achievements.triangulum.Unlock(); }
     }
 
     public IEnumerator turnOffCo()

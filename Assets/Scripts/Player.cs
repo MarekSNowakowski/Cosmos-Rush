@@ -561,15 +561,33 @@ public class Player : Circle
 
     public void saveStatistics()
     {
-        if (score > highScore) highScore = score;
-        if (maxSpeed > maxSpeedOverall) maxSpeedOverall = maxSpeed;
-        if (maxCombo > maxComboOverall) maxComboOverall = maxCombo;
+        if (score > highScore)
+        {
+            highScore = score;
+            CloudOnceServices.instance.SubmitScoreToLeaderboard((long)highScore);
+        }
+        if (maxSpeed > maxSpeedOverall)
+        {
+            maxSpeedOverall = maxSpeed;
+            CloudOnceServices.instance.SubmitSpeedToLeaderboard((long)maxSpeedOverall);
+        }
+        if (maxCombo > maxComboOverall)
+        {
+            maxComboOverall = maxCombo;
+            CloudOnceServices.instance.SubmitMaxComboToLeaderboard((long)maxComboOverall);
+        }
+
+        giveAchivments();
 
         destroyedBallsOverall += destroyedBalls;
+        CloudOnceServices.instance.SubmitBallsToLeaderboard((long)destroyedBallsOverall);
+
         distanceOverall += distance;
+        CloudOnceServices.instance.SubmitDistanceToLeaderboard((long)distanceOverall);
 
         money += Mathf.Round(score / 100);
         moneyEarned += Mathf.Round(score / 100);
+        CloudOnceServices.instance.SubmitMoneyToLeaderboard((long)moneyEarned);
 
         PlayerPrefs.SetFloat("HighScore", highScore);
         PlayerPrefs.SetFloat("maxSpeed", maxSpeedOverall);
@@ -579,6 +597,16 @@ public class Player : Circle
         PlayerPrefs.SetFloat("moneyEarned", moneyEarned);
         PlayerPrefs.SetInt("maxCombo", maxComboOverall);
         PlayerPrefs.Save();
+    }
+
+    void giveAchivments()
+    {
+        if (highScore > 1000000) { CloudOnce.Achievements.scoreMaster.Unlock(); }
+        if (maxSpeedOverall > 100) { CloudOnce.Achievements.speedster.Unlock(); }
+        if (maxComboOverall > 40) { CloudOnce.Achievements.comboGod.Unlock(); }
+        if(distanceOverall > 8848) { CloudOnce.Achievements.mountEverest.Unlock(); }
+        if (moneyEarned > 1000000) { CloudOnce.Achievements.millionaire.Unlock(); }
+        if (destroyedBallsOverall > 1000) { CloudOnce.Achievements.destroyer.Unlock(); }
     }
 
     public void loadStatistics()
@@ -714,5 +742,6 @@ public class Player : Circle
 
         changeColor();
 
+        if (PlayerPrefs.GetInt("gold", 0)!=0) { CloudOnce.Achievements.prestidge.Unlock(); }
     }
 }
