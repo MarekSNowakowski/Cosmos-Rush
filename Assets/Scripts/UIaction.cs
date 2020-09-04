@@ -77,14 +77,21 @@ public class UIaction : MonoBehaviour
 
     [Header("Ads")]
     //public AdManager adManager;
-    private bool canContinue = true;
+    public bool canContinue = true;
     public TextMeshProUGUI continueTimer;
+
+    [Header("Simple mode")]
+    public GameObject simpleModeToggle;
+    private Animator slowMoAnim;
 
     private void Start()
     {
         player = playerObject.GetComponent<Player>();
         rb = playerObject.GetComponent<Rigidbody2D>();
         animator = this.GetComponent<Animator>();
+        slowMoAnim = cam.GetComponent<Animator>();
+
+        Debug.Log(PlayerPrefs.GetInt("simpleMode", 0));
 
         comboTimerT = comboTimer.GetComponent<TextMeshProUGUI>();
         comboT = combo.GetComponent<TextMeshProUGUI>();
@@ -106,6 +113,13 @@ public class UIaction : MonoBehaviour
 
         musicVolumeSlider.value = PlayerPrefs.GetFloat("musicVolume", 0.5f);
         changeMusicVolume();
+
+        if(PlayerPrefs.GetInt("simpleMode",0)!=0)
+        {
+            simpleModeToggle.SetActive(true);
+        }
+
+        setSimpleMode();
     }
 
     public void Statistics()
@@ -217,7 +231,7 @@ public class UIaction : MonoBehaviour
     public IEnumerator addMoney()
     {
         var diffConst = player.money - startMoney;
-        money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
+        money.text = startMoney + " $" + Environment.NewLine + " + " + (moneyDifference) + " $";
         yield return new WaitForSeconds(1);
         for (int j = 12; j >= 0; j--)
         {
@@ -228,7 +242,7 @@ public class UIaction : MonoBehaviour
                 {
                     startMoney += Mathf.Pow(10, j);
                     moneyDifference -= Mathf.Pow(10, j);
-                    money.text = startMoney + Environment.NewLine + " + " + (moneyDifference);
+                    money.text = startMoney + " $" + Environment.NewLine + " + " + (moneyDifference) + " $";
                     if (moneyDifference == 0) break;
                     yield return new WaitForSeconds(0.1f);
                 } while (Mathf.Pow(10, j) < moneyDifference - (Mathf.Pow(10, j)));
@@ -236,7 +250,7 @@ public class UIaction : MonoBehaviour
 
         }
 
-        money.text = PlayerPrefs.GetFloat("money",0).ToString();
+        money.text = PlayerPrefs.GetFloat("money",0).ToString() + " $";
     }
 
     public void newGame()
@@ -439,4 +453,35 @@ public class UIaction : MonoBehaviour
         galaxy.gameObject.SetActive(false);
     }
 
+    public void OpenURL(string url)
+    {
+        Application.OpenURL(url);
+    }
+
+    public void simpleModeCheck()
+    {
+        if (PlayerPrefs.GetInt("simpleMode",0) == 0)
+        {
+            PlayerPrefs.SetInt("simpleMode", 1);
+            simpleModeToggle.SetActive(true);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("simpleMode", 0);
+            simpleModeToggle.SetActive(false);
+        }
+        PlayerPrefs.Save();
+    }
+
+    public void setSimpleMode()
+    {
+        if (PlayerPrefs.GetInt("simpleMode", 0) == 0)
+        {
+            slowMoAnim.SetBool("simpleMode", false);
+        }
+        else
+        {
+            slowMoAnim.SetBool("simpleMode", true);
+        }
+    }
 }

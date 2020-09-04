@@ -360,7 +360,23 @@ public class Player : Circle
                 Warp(collision.gameObject.GetComponent<BlackHole>().whiteHole);
                 IncreaseCombo();
                 AddPoints(500);
-            } else gameOver();
+            }
+            else
+            {
+                UIaction.canContinue = false;
+                gameOver();
+            }
+        }
+        else if (collision.gameObject.CompareTag("pinkBall"))
+        {
+            var velocity = rb.velocity.magnitude;
+            rb.velocity = Vector2.zero;
+            transform.position = collision.gameObject.transform.position;
+
+            rb.velocity = UnityEngine.Random.insideUnitCircle.normalized * velocity;
+
+            BallDestroyed(300);
+            collision.gameObject.GetComponent<Circle>().explode(calcPoints(300));
         }
         else if (collision.gameObject.CompareTag("500"))
         {
@@ -564,30 +580,30 @@ public class Player : Circle
         if (score > highScore)
         {
             highScore = score;
-            CloudOnceServices.instance.SubmitScoreToLeaderboard((long)highScore);
+            //CloudOnceServices.instance.SubmitScoreToLeaderboard((long)highScore);
         }
         if (maxSpeed > maxSpeedOverall)
         {
             maxSpeedOverall = maxSpeed;
-            CloudOnceServices.instance.SubmitSpeedToLeaderboard((long)maxSpeedOverall);
+            //CloudOnceServices.instance.SubmitSpeedToLeaderboard((long)maxSpeedOverall);
         }
         if (maxCombo > maxComboOverall)
         {
             maxComboOverall = maxCombo;
-            CloudOnceServices.instance.SubmitMaxComboToLeaderboard((long)maxComboOverall);
+            //CloudOnceServices.instance.SubmitMaxComboToLeaderboard((long)maxComboOverall);
         }
 
-        giveAchivments();
+        //giveAchivments();
 
         destroyedBallsOverall += destroyedBalls;
-        CloudOnceServices.instance.SubmitBallsToLeaderboard((long)destroyedBallsOverall);
+        //CloudOnceServices.instance.SubmitBallsToLeaderboard((long)destroyedBallsOverall);
 
         distanceOverall += distance;
-        CloudOnceServices.instance.SubmitDistanceToLeaderboard((long)distanceOverall);
+        //CloudOnceServices.instance.SubmitDistanceToLeaderboard((long)distanceOverall);
 
         money += Mathf.Round(score / 100);
         moneyEarned += Mathf.Round(score / 100);
-        CloudOnceServices.instance.SubmitMoneyToLeaderboard((long)moneyEarned);
+        //CloudOnceServices.instance.SubmitMoneyToLeaderboard((long)moneyEarned);
 
         PlayerPrefs.SetFloat("HighScore", highScore);
         PlayerPrefs.SetFloat("maxSpeed", maxSpeedOverall);
@@ -599,6 +615,7 @@ public class Player : Circle
         PlayerPrefs.Save();
     }
 
+    /*          v0.4 artefact
     void giveAchivments()
     {
         if (highScore > 1000000) { CloudOnce.Achievements.scoreMaster.Unlock(); }
@@ -607,7 +624,7 @@ public class Player : Circle
         if(distanceOverall > 8848) { CloudOnce.Achievements.mountEverest.Unlock(); }
         if (moneyEarned > 1000000) { CloudOnce.Achievements.millionaire.Unlock(); }
         if (destroyedBallsOverall > 1000) { CloudOnce.Achievements.destroyer.Unlock(); }
-    }
+    }*/
 
     public void loadStatistics()
     {
@@ -742,6 +759,6 @@ public class Player : Circle
 
         changeColor();
 
-        if (PlayerPrefs.GetInt("gold", 0)!=0) { CloudOnce.Achievements.prestidge.Unlock(); }
+        //if (PlayerPrefs.GetInt("gold", 0)!=0) { CloudOnce.Achievements.prestidge.Unlock(); }  //v0.4 artefact
     }
 }

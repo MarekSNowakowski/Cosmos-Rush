@@ -22,6 +22,7 @@ TagManager:
   - autoBall
   - transparentBall
   - particleArea
+  - pinkBall
   layers:
   - Default
   - TransparentFX
