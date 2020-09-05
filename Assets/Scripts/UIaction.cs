@@ -91,8 +91,6 @@ public class UIaction : MonoBehaviour
         animator = this.GetComponent<Animator>();
         slowMoAnim = cam.GetComponent<Animator>();
 
-        Debug.Log(PlayerPrefs.GetInt("simpleMode", 0));
-
         comboTimerT = comboTimer.GetComponent<TextMeshProUGUI>();
         comboT = combo.GetComponent<TextMeshProUGUI>();
         scoreT = score.GetComponent<TextMeshProUGUI>();
