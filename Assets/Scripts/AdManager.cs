@@ -27,22 +27,22 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
     void Start()
     {
         // Initialize the Ads service:
-        Advertisement.Initialize(GooglePlayID, testMode);
-        Advertisement.AddListener(this);
+        //Advertisement.Initialize(GooglePlayID, testMode);
+        //Advertisement.AddListener(this);
 
         continueButton.enabled = false;
         rewardButton.enabled = false;
 
-        randGamesLeft();
-        decideReward();
+        //randGamesLeft();
+        //decideReward();
     }
 
     public void play()
     {
         if(gamesLeft==0)
         {
-            randGamesLeft();
-            ShowInterstitialAd();
+            //randGamesLeft();
+            //ShowInterstitialAd();
         }
         gamesLeft--;
     }
@@ -58,7 +58,7 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
         // Check if UnityAds ready before calling Show method:
         if (Advertisement.IsReady())
         {
-            Advertisement.Show();
+            //Advertisement.Show();
         }
         else
         {
@@ -71,7 +71,7 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
         // Check if UnityAds ready before calling Show method:
         if (Advertisement.IsReady(continueID))
         {
-            Advertisement.Show(continueID);
+            //Advertisement.Show(continueID);
         }
         else
         {
@@ -84,7 +84,7 @@ public class AdManager : MonoBehaviour, IUnityAdsListener
         // Check if UnityAds ready before calling Show method:
         if (Advertisement.IsReady(rewardID))
         {
-            Advertisement.Show(rewardID);
+            //Advertisement.Show(rewardID);
         }
         else
         {
