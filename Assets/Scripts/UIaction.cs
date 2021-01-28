@@ -148,7 +148,7 @@ public class UIaction : MonoBehaviour
         audioFilter.reverbPreset = menuEffect;
         audioFilter.dryLevel = -dryLevel;
         player.StopAllCoroutines();
-
+        canContinue = false;
         if (canContinue)
         {
             StartCoroutine(continueCo());
